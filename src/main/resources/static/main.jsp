@@ -35,7 +35,7 @@
 
 </head>
 <body>
-    <div class="well center-block" style="max-width:400px">
+    <div class="well col-xs-8 col-xs-offset-2">
     <h1>Mass Mailer</h1>
     <form>
       <div class="form-group">
@@ -53,7 +53,7 @@
       </div>
 
       <div class="form-group">
-        <textarea class="form-control" rows="10" id="body" name="body" maxlength="2000"> </textarea>
+        <textarea class="form-control" rows="20" id="body" name="body" maxlength="2000"> </textarea>
       </div>
 
       <div class=text-right>
