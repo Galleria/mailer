@@ -6,9 +6,12 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery-2.2.3.js"></script>
     <script src="js/app/SenderValidator.js"></script>
+    <script src="js/ckeditor/ckeditor.js"></script>
+    <script src="js/init_ck_plugin.js"></script>
 
     <script>
         $( document ).ready(function() {
+            initCkPlugin();
 
             $("#send").prop( "disabled", true );
 
@@ -53,7 +56,7 @@
       </div>
 
       <div class="form-group">
-        <textarea class="form-control" rows="20" id="body" name="body" maxlength="2000"> </textarea>
+            <div id="editor"></div>
       </div>
 
       <div class=text-right>
