@@ -5,14 +5,27 @@
     <title>Title</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery-2.2.3.js"></script>
+    <script src="js/app/SenderValidator.js"></script>
 
     <script>
         $( document ).ready(function() {
 
-            $("#send").click(function( event ) {
+            $("#send").prop( "disabled", true );
 
-                alert( "Thanks for visiting!" );
+            var senderValidator = new SenderValidator();
 
+            $("#to, #topic, #body").blur(function( event ) {
+                var to = $('#to').val(),
+                    topic = $('#topic').val(),
+                    body = $('#body').val();
+
+                var result = senderValidator.checkRequired(to, topic, body);
+
+                if (result) {
+                    $("#send").prop( "disabled", false );
+                }else {
+                    $("#send").prop( "disabled", true );
+                }
             });
 
         });
