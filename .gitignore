@@ -1,0 +1,6 @@
+target/com.odde.mailer-1.0-SNAPSHOT.jar
+target/classes/com/main/SampleController.class
+target/maven-archiver/pom.properties
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
