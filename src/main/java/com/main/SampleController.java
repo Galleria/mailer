@@ -13,7 +13,7 @@ public class SampleController {
 
     @RequestMapping("/")
     String home() {
-        return "main";
+        return "redirect:main.jsp";
     }
 
     public static void main(String[] args) throws Exception {
