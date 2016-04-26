@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.*;
 public class SampleController {
 
     @RequestMapping("/")
-    @ResponseBody
     String home() {
-        return "Hello world";
+        return "main";
     }
 
     public static void main(String[] args) throws Exception {
