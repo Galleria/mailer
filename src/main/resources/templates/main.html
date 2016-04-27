@@ -14,6 +14,8 @@
     <script src="js/addContact.js"></script>
     <script>
         $( document ).ready(function() {
+            configCkPluginSize();
+            var initCkPlugin = loadCkPlugin();
             initCkPlugin();
 
             $("#send").prop( "disabled", true );
