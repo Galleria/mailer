@@ -18,6 +18,7 @@ public class WriterUtilsTest {
     private WriterUtils writer;
     private ArrayList<Contact> contacts;
     private String expected;
+    //FIXME We shouldn't communicate with system
     private String path = "testFile.json";
 
     @Before
@@ -81,5 +82,6 @@ public class WriterUtilsTest {
     @After
     public void clean() {
         writer.getFile().delete();
+        writer = null;
     }
 }
