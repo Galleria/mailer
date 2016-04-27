@@ -27,8 +27,8 @@ public class WriterUtilsTest {
         contacts = new ArrayList<Contact>();
 
         Contact contact = new Contact();
-        contact.setFirstname("Joey");
-        contact.setLastname("Boy");
+        contact.setFirstName("Joey");
+        contact.setLastName("Boy");
         contact.setEmail("JBoy@mail.com");
         contacts.add(contact);
 
@@ -44,8 +44,8 @@ public class WriterUtilsTest {
     @Test
     public void writeFileWithMoreContacts() throws IOException {
         Contact contact = new Contact();
-        contact.setFirstname("Kim");
-        contact.setLastname("Berry");
+        contact.setFirstName("Kim");
+        contact.setLastName("Berry");
         contact.setEmail("KBerry@mail.com");
         contacts.add(contact);
 
@@ -58,8 +58,8 @@ public class WriterUtilsTest {
     @Test
     public void writeFileWithDuplicateEmail() throws IOException {
         Contact contact = new Contact();
-        contact.setFirstname("John");
-        contact.setLastname("Boy");
+        contact.setFirstName("John");
+        contact.setLastName("Boy");
         contact.setEmail("JBoy@mail.com");
         contacts.add(contact);
 

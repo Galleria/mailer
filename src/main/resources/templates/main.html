@@ -11,32 +11,17 @@
     <script src="js/app/SenderValidator.js"></script>
     <script src="js/ckeditor/ckeditor.js"></script>
     <script src="js/app/initCkPlugin.js"></script>
-    <script src="js/addContact.js"></script>
+    <script src="js/app/ContactForm.js"></script>
+    <script src="js/app/onBlur.js"></script>
+    <script src="js/app/main.js"></script>
     <script>
+    var contactForm;
         $( document ).ready(function() {
             configCkPluginSize();
             var initCkPlugin = loadCkPlugin();
             initCkPlugin();
-
-            $("#send").prop( "disabled", true );
-
-            var senderValidator = new SenderValidator();
-
             var editor = CKEDITOR.instances.editor;
-            var onBlur = function( event ) {
-                 var to = $('#to').val(),
-                     topic = $('#topic').val(),
-                     body = $(editor.document.$).find('body').text();
-
-                 var result = senderValidator.checkRequired(to, topic, body);
-
-                 if (result) {
-                     $("#send").prop( "disabled", false );
-                 }else {
-                     $("#send").prop( "disabled", true );
-                 }
-             }
-            $("#to, #topic").blur(onBlur);
+            var onBlur = onBlurFactory(editor);
             editor.on('blur', onBlur);
 
             $('#send').click(function(event){
@@ -54,6 +39,7 @@
                 $('#errorAlert').slideUp();
             });
 
+            contactForm = new ContactForm();
         });
     </script>
 </head>
@@ -93,32 +79,29 @@
     </form>
 </div>
 
-
-<div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="contactLabel">
+<div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="contactLabel">Contact</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Contact</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="firstName" placeholder="First Name" />
+                        <input type="text" class="form-control" imaxlength="50" id="firstName" placeholder="First Name" onkeyup="contactForm.validate()"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" />
+                        <input type="text" class="form-control" maxlength="50" id="lastName" placeholder="Last Name" onkeyup="contactForm.validate()"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="email" placeholder="E-mail" />
+                        <input type="text" class="form-control" maxlength="100" id="email" placeholder="E-mail" onkeyup="contactForm.validate()"/>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-success">Add Contact</button>
+                        <button type="button" class="btn btn-success disabled" disabled="disabled" id="addContactButton" onclick="contactForm.add()">Add Contact</button>
                     </div>
                 </div>
-
+                <br/>
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
@@ -127,12 +110,15 @@
                         <th>E-mail</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="contactList">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
+
 </body>
 </html>

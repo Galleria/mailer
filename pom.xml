@@ -120,6 +120,7 @@
                 </executions>
                 <configuration>
                     <preloadSources>
+                        <source>${basedir}/src/main/resources/static/js/jquery-2.2.3.js</source>
                         <source>${basedir}/src/main/resources/static/js/ckeditor/ckeditor.js</source>
                     </preloadSources>
                     <jsSrcDir>${basedir}/src/main/resources/static/js/app</jsSrcDir>
