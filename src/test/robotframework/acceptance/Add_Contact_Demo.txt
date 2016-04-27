@@ -6,15 +6,21 @@ ${url}  http://localhost:63342/MailerRobotTest/html/Table.html
 ${delay}  0
 
 *** Test Cases ***
+Hello World
+    Log  Hello World!
+
 Open Mailer Page
+    [Tags]  work_in_progress
     Open Browser  ${url}
     Sleep  ${delay} seconds
 
 Go To Contract Page
+    [Tags]  work_in_progress
     Click Contract Button
     Sleep  ${delay} seconds
 
 Add First Contract
+    [Tags]  work_in_progress
     Set Name Field  Jack
     Set Last Name Field  Dawson
     Set Email Field  JDawson@titanic.com
@@ -22,9 +28,12 @@ Add First Contract
     ${rowCnt}=  Count All Contacts
     Sleep  ${delay} seconds
     Should Be Equal As Integers  2  ${rowCnt}
-    Validate Input Fields
+#   Validate Input Fields
+    Check Contract Exist  Jack  Dawson  JDawson@titanic.com
+
 
 Add Second Contract
+    [Tags]  work_in_progress
     Set Name Field  Rose
     Set Last Name Field  Flower
     Set Email Field  RFlower@titanic.com
@@ -35,6 +44,7 @@ Add Second Contract
     Validate Input Fields
 
 Add Contract Duplicate Email
+    [Tags]  work_in_progress
     Set Name Field  Jack
     Set Last Name Field  Kitty
     Set Email Field  JDawson@titanic.com
@@ -45,6 +55,7 @@ Add Contract Duplicate Email
     Validate Input Fields
 
 Close Mailer Page
+    [Tags]  work_in_progress
     Close Browser
 
 *** Keywords ***
@@ -57,3 +68,7 @@ Validate Input Fields
     Should Be Equal As Strings  ${email}  ${EMPTY}
     ${buttonState}=  Get Button State
     Should Be Equal  ${buttonState}  Disabled
+
+Check Contract Exist  ${name}  ${lastName}  ${email}
+    ${isExisted}=  Is Contract Exist In Table  ${name}  ${lastName}  ${email}
+    Should Be true  ${isExisted}

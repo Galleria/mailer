@@ -163,7 +163,11 @@
                 </executions>
                 <configuration>
                     <logLevel>DEBUG</logLevel>
+                    <excludes>
+                        <exclude>work_in_progress</exclude>
+                    </excludes>
                 </configuration>
+
             </plugin>
         </plugins>
     </build>
