@@ -102,7 +102,7 @@
                 </executions>
                 <configuration>
 
-                    <jsSrcDir>${basedir}/src/main/resources/static/js/app</jsSrcDir>
+                    <jsSrcDir>${basedir}/src/main/resources/static/js</jsSrcDir>
                     <jsTestSrcDir>${basedir}/src/test/javascript</jsTestSrcDir>
                 </configuration>
             </plugin>
@@ -148,7 +148,7 @@
                                     <value>${phantomjs.binary}</value>
                                 </capability>
                             </webDriverCapabilities>
-                            <jsSrcDir>${basedir}/src/main/resources/static/js/app</jsSrcDir>
+                            <jsSrcDir>${basedir}/src/main/resources/static/js</jsSrcDir>
                             <jsTestSrcDir>${basedir}/src/test/javascript</jsTestSrcDir>
                         </configuration>
                     </plugin>
