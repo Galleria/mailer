@@ -30,8 +30,8 @@ public class ReaderUtilsTest {
         expectedContacts = new ArrayList<Contact>();
 
         Contact contact = new Contact();
-        contact.setFirstname("Joey");
-        contact.setLastname("Boy");
+        contact.setFirstName("Joey");
+        contact.setLastName("Boy");
         contact.setEmail("JBoy@mail.com");
         expectedContacts.add(contact);
     }
@@ -47,8 +47,8 @@ public class ReaderUtilsTest {
     @Test
     public void readMoreThanOneLine() throws IOException {
         Contact contact = new Contact();
-        contact.setFirstname("Kim");
-        contact.setLastname("Berry");
+        contact.setFirstName("Kim");
+        contact.setLastName("Berry");
         contact.setEmail("KBerry@mail.com");
         expectedContacts.add(contact);
 
@@ -61,8 +61,8 @@ public class ReaderUtilsTest {
     private void assertContactsEqual(ArrayList<Contact> resultContacts) {
         assertEquals(expectedContacts.size(), resultContacts.size());
         for ( int i = 0; i < resultContacts.size(); i++ ) {
-            assertEquals(expectedContacts.get(i).getFirstname(), resultContacts.get(i).getFirstname());
-            assertEquals(expectedContacts.get(i).getLastname(), resultContacts.get(i).getLastname());
+            assertEquals(expectedContacts.get(i).getFirstName(), resultContacts.get(i).getFirstName());
+            assertEquals(expectedContacts.get(i).getLastName(), resultContacts.get(i).getLastName());
             assertEquals(expectedContacts.get(i).getEmail(), resultContacts.get(i).getEmail());
         }
     }
