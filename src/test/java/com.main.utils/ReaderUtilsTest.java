@@ -21,7 +21,6 @@ public class ReaderUtilsTest {
 
     private ReaderUtils reader;
     private ArrayList<Contact> expectedContacts;
-    //FIXME We shouldn't communicate with system
     private String path = "testFile.json";
 
     @Before
