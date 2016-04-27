@@ -3,17 +3,13 @@
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
-var beforeInitCkPlugin = function (){
-    if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
-        CKEDITOR.tools.enableHtml5Elements( document );
+if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
+	CKEDITOR.tools.enableHtml5Elements( document );
 
-    CKEDITOR.config.height = 150;
-    CKEDITOR.config.width = 'auto';
-};
+CKEDITOR.config.height = 150;
+CKEDITOR.config.width = 'auto';
 
-beforeInitCkPlugin();
-
-function loadCkPlugin() {
+var initCkPlugin = ( function() {
 	var wysiwygareaAvailable = isWysiwygareaAvailable(),
 		isBBCodeBuiltIn = !!CKEDITOR.plugins.get( 'bbcode' );
 
@@ -49,7 +45,5 @@ function loadCkPlugin() {
 
 		return !!CKEDITOR.plugins.get( 'wysiwygarea' );
 	}
-}
-
-var initCkPlugin = loadCkPlugin();
+} )();
 
