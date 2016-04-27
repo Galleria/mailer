@@ -85,6 +85,24 @@
             <version>2.7.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.robotframework</groupId>
+            <artifactId>javalib-core</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.53.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>htmlunit-driver</artifactId>
+            <version>2.20</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -102,15 +120,55 @@
                 </executions>
                 <configuration>
                     <preloadSources>
+                        <source>${basedir}/src/main/resources/static/js/jquery-2.2.3.js</source>
                         <source>${basedir}/src/main/resources/static/js/ckeditor/ckeditor.js</source>
                     </preloadSources>
                     <jsSrcDir>${basedir}/src/main/resources/static/js/app</jsSrcDir>
                     <jsTestSrcDir>${basedir}/src/test/javascript</jsTestSrcDir>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.robotframework</groupId>
+                <artifactId>robotframework-maven-plugin</artifactId>
+                <version>1.4.3</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <logLevel>DEBUG</logLevel>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
+    
     <profiles>
         <profile>
             <id>jenkins</id>
