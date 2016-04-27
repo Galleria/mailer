@@ -10,50 +10,18 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/app/SenderValidator.js"></script>
     <script src="js/ckeditor/ckeditor.js"></script>
-    <script src="js/initCkPlugin.js"></script>
+    <script src="js/app/initCkPlugin.js"></script>
     <script src="js/addContact.js"></script>
+    <script src="js/app/onBlur.js"></script>
+    <script src="js/app/main.js"></script>
     <script>
         $( document ).ready(function() {
             configCkPluginSize();
             var initCkPlugin = loadCkPlugin();
             initCkPlugin();
-
-            $("#send").prop( "disabled", true );
-
-            var senderValidator = new SenderValidator();
-
             var editor = CKEDITOR.instances.editor;
-            var onBlur = function( event ) {
-                 var to = $('#to').val(),
-                     topic = $('#topic').val(),
-                     body = $(editor.document.$).find('body').text();
-
-                 var result = senderValidator.checkRequired(to, topic, body);
-
-                 if (result) {
-                     $("#send").prop( "disabled", false );
-                 }else {
-                     $("#send").prop( "disabled", true );
-                 }
-             }
-            $("#to, #topic").blur(onBlur);
+            var onBlur = onBlurFactory(editor);
             editor.on('blur', onBlur);
-
-            $('#send').click(function(event){
-                $('#errorAlert').hide();
-                var to = $('#to').val();
-                var result = senderValidator.checkEmailFormat(to);
-
-                if(!result) {
-                    $('#errorAlert .message').text('Invalid email format.');
-                    $('#errorAlert').slideDown();
-                }
-            });
-
-            $('#errorAlert .close').click(function(){
-                $('#errorAlert').slideUp();
-            });
-
         });
     </script>
 </head>
