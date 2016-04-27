@@ -12,32 +12,16 @@
     <script src="js/ckeditor/ckeditor.js"></script>
     <script src="js/app/initCkPlugin.js"></script>
     <script src="js/app/ContactForm.js"></script>
+    <script src="js/app/onBlur.js"></script>
+    <script src="js/app/main.js"></script>
     <script>
     var contactForm;
         $( document ).ready(function() {
             configCkPluginSize();
             var initCkPlugin = loadCkPlugin();
             initCkPlugin();
-
-            $("#send").prop( "disabled", true );
-
-            var senderValidator = new SenderValidator();
-
             var editor = CKEDITOR.instances.editor;
-            var onBlur = function( event ) {
-                 var to = $('#to').val(),
-                     topic = $('#topic').val(),
-                     body = $(editor.document.$).find('body').text();
-
-                 var result = senderValidator.checkRequired(to, topic, body);
-
-                 if (result) {
-                     $("#send").prop( "disabled", false );
-                 }else {
-                     $("#send").prop( "disabled", true );
-                 }
-             }
-            $("#to, #topic").blur(onBlur);
+            var onBlur = onBlurFactory(editor);
             editor.on('blur', onBlur);
 
             $('#send').click(function(event){
