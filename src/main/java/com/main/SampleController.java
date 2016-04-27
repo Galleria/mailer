@@ -1,9 +1,10 @@
 package com.main;
 
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 /**
  * Created by cadet on 4/26/2016 AD.
  */
@@ -13,7 +14,7 @@ public class SampleController {
 
     @RequestMapping("/")
     String home() {
-        return "redirect:main.jsp";
+        return "main";
     }
 
     public static void main(String[] args) throws Exception {
