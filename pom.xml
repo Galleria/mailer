@@ -101,7 +101,9 @@
                     </execution>
                 </executions>
                 <configuration>
-
+                    <preloadSources>
+                        <source>${basedir}/src/main/resources/static/js/ckeditor/ckeditor.js</source>
+                    </preloadSources>
                     <jsSrcDir>${basedir}/src/main/resources/static/js/app</jsSrcDir>
                     <jsTestSrcDir>${basedir}/src/test/javascript</jsTestSrcDir>
                 </configuration>
@@ -148,6 +150,9 @@
                                     <value>${phantomjs.binary}</value>
                                 </capability>
                             </webDriverCapabilities>
+                            <preloadSources>
+                                <source>${basedir}/src/main/resources/static/js/ckeditor/ckeditor.js</source>
+                            </preloadSources>
                             <jsSrcDir>${basedir}/src/main/resources/static/js/app</jsSrcDir>
                             <jsTestSrcDir>${basedir}/src/test/javascript</jsTestSrcDir>
                         </configuration>
