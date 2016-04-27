@@ -1,6 +1,8 @@
 package com.main.utils;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.main.entities.Contact;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +12,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -18,25 +20,62 @@ import static org.junit.Assert.assertEquals;
 public class ReaderUtilsTest {
 
     private ReaderUtils reader;
-    private String expect = "Expected message";
-    private String path = "testFile.txt";
+    private ArrayList<Contact> expectedContacts;
+    private String path = "testFile.json";
 
     @Before
     public void setup(){
         reader = new ReaderUtils( path );
+        expectedContacts = new ArrayList<Contact>();
+
+        Contact contact = new Contact();
+        contact.setFirstname("Joey");
+        contact.setLastname("Boy");
+        contact.setEmail("JBoy@mail.com");
+        expectedContacts.add(contact);
     }
 
     @Test
-    public void read() throws IOException {
-        if( write() ){
-            assertEquals(expect, reader.read());
+    public void readOneLine() throws IOException {
+        if( write(expectedContacts) ){
+            ArrayList<Contact> resultContacts = reader.read();
+            assertContactsEqual(resultContacts);
         }
     }
 
-    private boolean write(){
+    @Test
+    public void readMoreThanOneLine() throws IOException {
+        Contact contact = new Contact();
+        contact.setFirstname("Kim");
+        contact.setLastname("Berry");
+        contact.setEmail("KBerry@mail.com");
+        expectedContacts.add(contact);
+
+        if( write(expectedContacts) ){
+            ArrayList<Contact> resultContacts = reader.read();
+            assertContactsEqual(resultContacts);
+        }
+    }
+
+    private void assertContactsEqual(ArrayList<Contact> resultContacts) {
+        assertEquals(expectedContacts.size(), resultContacts.size());
+        for ( int i = 0; i < resultContacts.size(); i++ ) {
+            assertEquals(expectedContacts.get(i).getFirstname(), resultContacts.get(i).getFirstname());
+            assertEquals(expectedContacts.get(i).getLastname(), resultContacts.get(i).getLastname());
+            assertEquals(expectedContacts.get(i).getEmail(), resultContacts.get(i).getEmail());
+        }
+    }
+
+    private boolean write(ArrayList<Contact> contacts) {
         File file = new File(path);
-        List<String> lines = Arrays.asList(expect);
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> lines = new ArrayList<String>();
+
         try {
+            for( Contact contact : contacts ){
+                String stringContact = mapper.writeValueAsString(contact);
+                lines.add(stringContact);
+            }
             Files.write(Paths.get(file.getPath()), lines, Charset.forName("UTF-8"));
         } catch (IOException e) {
             return false;
