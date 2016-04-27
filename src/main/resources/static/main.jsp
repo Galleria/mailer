@@ -29,20 +29,37 @@
 
             var senderValidator = new SenderValidator();
 
-            $("#to, #topic, #body").blur(function( event ) {
-                var to = $('#to').val(),
-                    topic = $('#topic').val(),
-                    body = $('#body').val();
+            var editor = CKEDITOR.instances.editor;
+            var onBlur = function( event ) {
+                 var to = $('#to').val(),
+                     topic = $('#topic').val(),
+                     body = $(editor.document.$).find('body').text();
 
-                var result = senderValidator.checkRequired(to, topic, body);
+                 var result = senderValidator.checkRequired(to, topic, body);
 
-                if (result) {
-                    $("#send").prop( "disabled", false );
-                }else {
-                    $("#send").prop( "disabled", true );
+                 if (result) {
+                     $("#send").prop( "disabled", false );
+                 }else {
+                     $("#send").prop( "disabled", true );
+                 }
+             }
+            $("#to, #topic").blur(onBlur);
+            editor.on('blur', onBlur);
+
+            $('#send').click(function(event){
+                $('#errorAlert').hide();
+                var to = $('#to').val();
+                var result = senderValidator.checkEmailFormat(to);
+
+                if(!result) {
+                    $('#errorAlert .message').text('Invalid email format.');
+                    $('#errorAlert').slideDown();
                 }
             });
 
+            $('#errorAlert .close').click(function(){
+                $('#errorAlert').slideUp();
+            });
         });
 
 
@@ -50,6 +67,10 @@
 
 </head>
 <body>
+    <div id="errorAlert" class="alert alert-danger collapse">
+      <a href="#" class="close" aria-label="close">&times;</a>
+      <span class="message"></span>
+    </div>
     <div class="well col-xs-8 col-xs-offset-2">
     <h1>Mass Mailer</h1>
     <form>
@@ -84,6 +105,7 @@
 
     </form>
     </div>
+
 
 
 

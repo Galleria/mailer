@@ -6,7 +6,7 @@
 if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
 	CKEDITOR.tools.enableHtml5Elements( document );
 
-CKEDITOR.config.height = 150;
+CKEDITOR.config.height = 450;
 CKEDITOR.config.width = 'auto';
 
 var initCkPlugin = ( function() {
