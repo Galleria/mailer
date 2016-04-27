@@ -17,7 +17,7 @@
 
     <script src="js/ckeditor/ckeditor.js"></script>
 
-    <script src="js/init_ck_plugin.js"></script>
+    <script src="js/app/initCkPlugin.js"></script>
 
     <script src="js/addContact.js"></script>
 
