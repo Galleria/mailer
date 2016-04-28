@@ -17,3 +17,13 @@ Open Browser To Main Page
 
 Main Page Should Be Open
     Title Should Be    Title
+
+Input Email Form
+    [Arguments]     ${to}   ${topic}    ${bodytext}
+    Input Text  to   ${to}
+    Input Text  topic   ${topic}
+    Select Frame    xpath=//iframe
+    Input Text  xpath=//body    ${bodytext}
+    Press Key   xpath=//body    \\09
+    Unselect Frame
+    Sleep  1 seconds

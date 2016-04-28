@@ -9,24 +9,12 @@ Send button should be disabled when open application
 
 Send button should be enabled when enter all required fields
     Open Browser To Main Page
-    Input Text  to   penny@hotmail.com
-    Input Text  topic   Test Topic
-    Select Frame    xpath=//iframe
-    Input Text  xpath=//body    TEST BODY
-    Press Key   xpath=//body    \\09
-    Unselect Frame
-    Sleep  1 seconds
+    Input Email Form    penny@hotmail.com   Test Topic  TEST BODY
     Element Should Be Enabled   send
 
 Send button should send an email
     Open Browser To Main Page
-    Input Text  to   penny.inspector.gadget1@gmail.com
-    Input Text  topic   Test Topic
-    Select Frame    xpath=//iframe
-    Input Text  xpath=//body    TEST BODY
-    Press Key   xpath=//body    \\09
-    Unselect Frame
-    Sleep  1 seconds
+    Input Email Form    penny.inspector.gadget1@gmail.com   Test Topic  TEST BODY
     Click Button  send
     Wait Until Page Contains Element  next
     Element Text Should Be  xpath=//li[1]/span  penny.inspector.gadget1@gmail.com
@@ -36,13 +24,7 @@ Send button should send an email
 
 Send button should send an email if there is a duplicated
     Open Browser To Main Page
-    Input Text  to   penny.inspector.gadget1@gmail.com,penny.inspector.gadget1@gmail.com
-    Input Text  topic   Test Topic
-    Select Frame    xpath=//iframe
-    Input Text  xpath=//body    TEST BODY
-    Press Key   xpath=//body    \\09
-    Unselect Frame
-    Sleep  1 seconds
+    Input Email Form    penny.inspector.gadget1@gmail.com,penny.inspector.gadget1@gmail.com   Test Topic  TEST BODY
     Click Button  send
     Wait Until Page Contains Element  next
     Xpath Should Match X Times  //li/span  1
@@ -52,13 +34,7 @@ Send button should send an email if there is a duplicated
 
 Send button should send multiple emails
     Open Browser To Main Page
-    Input Text  to   penny.inspector.gadget1@gmail.com, penny.inspector.gadget2@gmail.com
-    Input Text  topic   Test Topic
-    Select Frame    xpath=//iframe
-    Input Text  xpath=//body    TEST BODY
-    Press Key   xpath=//body    \\09
-    Unselect Frame
-    Sleep  1 seconds
+    Input Email Form    penny.inspector.gadget1@gmail.com, penny.inspector.gadget2@gmail.com    Test Topic  TEST BODY
     Click Button  send
     Wait Until Page Contains Element  next
     Element Text Should Be  xpath=//li[1]/span  penny.inspector.gadget1@gmail.com
