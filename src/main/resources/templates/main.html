@@ -1,223 +1,3 @@
-<<<<<<< HEAD:src/main/resources/static/main.jsp
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-
-
-
-    <script src="js/jquery-2.2.3.js"></script>
-
-    <script src="js/bootstrap.min.js"></script>
-
-    <script src="js/app/SenderValidator.js"></script>
-
-    <script src="js/ckeditor/ckeditor.js"></script>
-
-    <script src="js/init_ck_plugin.js"></script>
-
-    <script src="js/addContact.js"></script>
-
-    <script>
-        $( document ).ready(function() {
-            initCkPlugin();
-
-            $("#send").prop( "disabled", true );
-
-            var senderValidator = new SenderValidator();
-
-            var editor = CKEDITOR.instances.editor;
-            var onBlur = function( event ) {
-                 var to = $('#to').val(),
-                     topic = $('#topic').val(),
-                     body = $(editor.document.$).find('body').text();
-
-                 var result = senderValidator.checkRequired(to, topic, body);
-
-                 if (result) {
-                     $("#send").prop( "disabled", false );
-                 }else {
-                     $("#send").prop( "disabled", true );
-                 }
-             }
-            $("#to, #topic").blur(onBlur);
-            editor.on('blur', onBlur);
-
-            $('#send').click(function(event){
-                $('#errorAlert').hide();
-                var to = $('#to').val();
-                var result = senderValidator.checkEmailFormat(to);
-
-                if(!result) {
-                    $('#errorAlert .message').text('Invalid email format.');
-                    $('#errorAlert').slideDown();
-                }
-            });
-
-            $('#errorAlert .close').click(function(){
-                $('#errorAlert').slideUp();
-            });
-        });
-
-
-    </script>
-
-</head>
-<body>
-    <div id="errorAlert" class="alert alert-danger collapse">
-      <a href="#" class="close" aria-label="close">&times;</a>
-      <span class="message"></span>
-    </div>
-    <div class="well col-xs-8 col-xs-offset-2">
-    <h1>Mass Mailer</h1>
-    <form>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-addon">To</div>
-          <input type="text" class="form-control" id="to" name="to" placeholder="To">
-          <a class="btn btn-default" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
-
-
-            <span class="glyphicon glyphicon-book"></span>
-
-
-          </a>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-addon">Topic</div>
-            <input type="text" class="form-control" id="topic" name="topic" placeholder="Topic" maxlength="500">
-        </div>
-      </div>
-
-      <div class="form-group">
-            <div id="editor"></div>
-      </div>
-
-      <div class=text-right>
-        <button type="button" id="send" name="send" class="btn btn-primary">Send</button>
-      </div>
-
-    </form>
-    </div>
-
-
-
-
-    <div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="contactLabel">
-
-    <div class="modal-dialog" role="document">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-
-                <h4 class="modal-title" id="contactLabel">Contact</h4>
-
-            </div>
-
-            <div class="modal-body">
-
-                <div class="row">
-
-
-                    <div class="col-md-3">
-
-
-                        <input type="text" class="form-control" id="firstName" placeholder="First Name">
-
-
-                    </div>
-                    
-
-
-                    <div class="col-md-3">
-
-
-                        <input type="text" class="form-control" id="lastName" placeholder="Last Name">
-
-
-                    </div>
-                    
-
-
-                    <div class="col-md-3">
-
-
-                        <input type="text" class="form-control" id="email" placeholder="E-mail">
-
-
-                    </div>
-                    
-
-
-                    <div class="col-md-3">
-
-
-                        <button type="button" class="btn btn-success">Add Contact</button>
-
-
-                    </div>
-
-                </div>
-                
-<table class="table table-striped table-bordered">
-
-
-                    <thead>
-
-
-                        <tr>
-
-
-                            <th>First Name</th>
-                        
-
-
-                            <th>Last Name</th>
-                        
-
-
-                            <th>E-mail</th>
-                        
-
-
-                        </tr>
-                    
-
-
-                    </thead>
-                    
-
-
-                    <tbody>
-</tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    </div>
-</body>
-</html>
-
-
-
-=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -225,47 +5,56 @@
     <title>Title</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <link href="css/bootstrap-material-design.css" rel="stylesheet"/>
+    <link href="css/ripples.css" rel="stylesheet"/>
+    <link href="css/main.css" rel="stylesheet"/>
 
     <script src="js/jquery-2.2.3.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/underscore.js"></script>
     <script src="js/app/SenderValidator.js"></script>
     <script src="js/ckeditor/ckeditor.js"></script>
-    <script src="js/init_ck_plugin.js"></script>
-    <script src="js/addContact.js"></script>
+    <script src="js/app/initCkPlugin.js"></script>
+    <script src="js/app/ContactForm.js"></script>
+    <script src="js/material.js"></script>
+    <script src="js/ripples.js"></script>
+    <script src="js/app/EmailForm.js"></script>
+    <script src="js/app/EmailFormView.js"></script>
     <script>
+    var contactForm;
         $( document ).ready(function() {
+            configCkPluginSize();
+            var initCkPlugin = loadCkPlugin();
             initCkPlugin();
 
-            $("#send").prop( "disabled", true );
-
-            var senderValidator = new SenderValidator();
-
-            $("#to, #topic, #body").blur(function( event ) {
-                var to = $('#to').val(),
-                    topic = $('#topic').val(),
-                    body = $('#body').val();
-
-                var result = senderValidator.checkRequired(to, topic, body);
-
-                if (result) {
-                    $("#send").prop( "disabled", false );
-                }else {
-                    $("#send").prop( "disabled", true );
-                }
+            var emailForm = new EmailForm();
+            var emailFormView = new EmailFormView(emailForm, {
+                recipients : $('#to'),
+                topic : $('#topic'),
+                editor : CKEDITOR.instances.editor,
+                send : $('#send'),
+                errorAlert : $('#errorAlert')
             });
+            emailFormView.initialize();
 
+            contactForm = new ContactForm();
+            $.material.init();
         });
     </script>
 </head>
 <body>
+<div id="errorAlert" class="alert alert-danger collapse">
+    <a href="#" class="close" aria-label="close">&times;</a>
+    <div class="message"></div>
+</div>
 <div class="well col-xs-8 col-xs-offset-2">
     <h1>Mass Mailer</h1>
-    <form>
+    <form id="form" action="/send" method="POST">
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-addon">To</div>
                 <input type="text" class="form-control" id="to" name="to" placeholder="To" />
-                <a class="btn btn-default" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
+                <a class="btn btn-default btn-raised" onclick="contactForm.loadContacts()" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
                     <span class="glyphicon glyphicon-book"></span>
                 </a>
             </div>
@@ -280,6 +69,7 @@
 
         <div class="form-group">
             <div id="editor"></div>
+            <input type="hidden" name="body" id="body" />
         </div>
 
         <div class="text-right">
@@ -289,32 +79,29 @@
     </form>
 </div>
 
-
-<div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="contactLabel">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="contactLabel">Contact</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="contactModalLabel">Contact</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="firstName" placeholder="First Name" />
+                        <input type="text" class="form-control" imaxlength="50" id="firstName" placeholder="First Name" onkeyup="contactForm.validateRequired()"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="lastName" placeholder="Last Name" />
+                        <input type="text" class="form-control" maxlength="50" id="lastName" placeholder="Last Name" onkeyup="contactForm.validateRequired()"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" id="email" placeholder="E-mail" />
+                        <input type="email" class="form-control" id="email" maxlength="100" placeholder="E-mail" onkeyup="contactForm.validateRequired()"/>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-success">Add Contact</button>
+                        <button type="button" class="btn btn-success btn-raised disabled" disabled="disabled" id="addContactButton" onclick="contactForm.validateEmail()">Add Contact</button>
                     </div>
                 </div>
-
+                <br/>
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
@@ -323,13 +110,15 @@
                         <th>E-mail</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="contactList">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
+
 </body>
 </html>
->>>>>>> 7fab89168c38e5a51eef5f099652a9b6bbc0e8ba:src/main/resources/templates/main.html

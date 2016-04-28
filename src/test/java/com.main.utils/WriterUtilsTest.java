@@ -34,8 +34,8 @@ public class WriterUtilsTest {
         doNothing().when(sbw).write(anyString());
 
         Contact contact = new Contact();
-        contact.setFirstname("Joey");
-        contact.setLastname("Boy");
+        contact.setFirstName("Joey");
+        contact.setLastName("Boy");
         contact.setEmail("JBoy@mail.com");
         contacts.add(contact);
 
@@ -57,8 +57,8 @@ public class WriterUtilsTest {
         when(readerUtils.read()).thenReturn(contacts);
 
         Contact contact = new Contact();
-        contact.setFirstname("John");
-        contact.setLastname("Boy");
+        contact.setFirstName("John");
+        contact.setLastName("Boy");
         contact.setEmail("JBoy@mail.com");
 
         writer.setReaderUtils(readerUtils);
