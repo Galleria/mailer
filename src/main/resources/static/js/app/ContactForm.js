@@ -2,8 +2,9 @@
 var ContactForm = function(){}
 
 var addContactToTable = function(result){
+    $("#contactList").empty();
 
-    result.forEach(function(contact){
+    $.each(result, function(index, contact){
         $tr = $("<tr>");
         $tdFirstName = $("<td>").text( contact.firstName );
         $tdLastName = $("<td>").text( contact.lastName );
@@ -14,24 +15,16 @@ var addContactToTable = function(result){
             .append($tdEMail);
 
         $("#contactList").append( $tr );
-    })
+    });
 
     clearContactInputFields();
-    ContactForm.prototype.validate();
+    ContactForm.prototype.validateRequired();
 };
 
 var clearContactInputFields = function(){
     $("#firstName").val("");
     $("#lastName").val("");
     $("#email").val("");
-};
-
-var onSuccess = function( result ) {
-    response = result;
-
-    $("#contactList").empty();
-
-    ContactForm.prototype.loadContacts();
 };
 
 ContactForm.prototype.loadContacts = function(){
@@ -63,7 +56,10 @@ ContactForm.prototype.add = function(){
       type: "POST",
       async : false,
       data : contact,
-      success: onSuccess,
+      success: function(result){
+        response = result;
+        ContactForm.prototype.loadContacts();
+      },
       fail: function(error) {
         response = error;
       }
@@ -72,10 +68,21 @@ ContactForm.prototype.add = function(){
     return response;
 }
 
-ContactForm.prototype.validate = function(){
-    var firstNameField = $("#firstName").val().trim();
-    var lastNameField = $("#lastName").val().trim();
-    var emailField = $("#email").val().trim();
+ContactForm.prototype.validateEmail = function(){
+    var senderValidator = new SenderValidator();
+    var emailField = $("#email").val();
+
+    if( ! senderValidator.checkEmailFormat(emailField) ){
+        alert( "Invaild Email format !!" );
+    }else{
+        ContactForm.prototype.add();
+    }
+}
+
+ContactForm.prototype.validateRequired = function(){
+    var firstNameField = $("#firstName").val() ? $("#firstName").val().trim() : "";
+    var lastNameField = $("#lastName").val() ? $("#lastName").val().trim() : "";
+    var emailField = $("#email").val() ? $("#email").val().trim() : "";
     var button = $("#addContactButton");
 
     if(firstNameField && lastNameField && emailField){

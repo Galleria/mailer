@@ -17,8 +17,8 @@
     <script src="js/app/ContactForm.js"></script>
     <script src="js/app/onBlur.js"></script>
     <script src="js/app/main.js"></script>
-    <script src="js/app/material.js"></script>
-    <script src="js/app/ripples.js"></script>
+    <script src="js/material.js"></script>
+    <script src="js/ripples.js"></script>
     <script>
     var contactForm;
         $( document ).ready(function() {
@@ -49,6 +49,7 @@
             });
 
             contactForm = new ContactForm();
+            $.material.init();
         });
     </script>
 </head>
@@ -64,7 +65,7 @@
             <div class="input-group">
                 <div class="input-group-addon">To</div>
                 <input type="text" class="form-control" id="to" name="to" placeholder="To" />
-                <a class="btn btn-default btn-raised" onclick="contacForm.get" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
+                <a class="btn btn-default btn-raised" onclick="contactForm.loadContacts()" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
                     <span class="glyphicon glyphicon-book"></span>
                 </a>
             </div>
@@ -99,16 +100,16 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <input type="text" class="form-control" imaxlength="50" id="firstName" placeholder="First Name" onkeyup="contactForm.validate()"/>
+                        <input type="text" class="form-control" imaxlength="50" id="firstName" placeholder="First Name" onkeyup="contactForm.validateRequired()"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" maxlength="50" id="lastName" placeholder="Last Name" onkeyup="contactForm.validate()"/>
+                        <input type="text" class="form-control" maxlength="50" id="lastName" placeholder="Last Name" onkeyup="contactForm.validateRequired()"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" maxlength="100" id="email" placeholder="E-mail" onkeyup="contactForm.validate()"/>
+                        <input type="email" class="form-control" id="email" maxlength="100" placeholder="E-mail" onkeyup="contactForm.validateRequired()"/>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-success btn-raised disabled" disabled="disabled" id="addContactButton" onclick="contactForm.add()">Add Contact</button>
+                        <button type="button" class="btn btn-success btn-raised disabled" disabled="disabled" id="addContactButton" onclick="contactForm.validateEmail()">Add Contact</button>
                     </div>
                 </div>
                 <br/>
