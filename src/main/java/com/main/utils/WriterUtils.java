@@ -11,31 +11,27 @@ import java.util.ArrayList;
 public class WriterUtils {
 
     private BufferedWriter bw = null;
-    private ReaderUtils readerUtils = null;
+    private ArrayList<Contact> contacts = null;
+
+    public void setContacts(ArrayList<Contact> contacts) {
+        this.contacts = contacts;
+    }
 
     public WriterUtils( BufferedWriter bw ) throws IOException {
         this.bw = bw;
     }
 
-    public void setReaderUtils(ReaderUtils readerUtils) {
-        this.readerUtils = readerUtils;
-    }
-
     public void write(Contact contact) throws IOException {
-        ArrayList<Contact> contacts = getRead();
         contacts.add(contact);
         contacts = removeDuplicate(contacts);
         ObjectMapper mapper = new ObjectMapper();
 
         for( Contact tempContact : contacts ){
             bw.write(mapper.writeValueAsString(tempContact));
+            bw.write(System.lineSeparator());
         }
-
+        bw.flush();
         bw.close();
-    }
-
-    protected ArrayList<Contact> getRead() throws IOException {
-        return this.readerUtils.read();
     }
 
     private ArrayList<Contact> removeDuplicate(ArrayList<Contact> contacts){

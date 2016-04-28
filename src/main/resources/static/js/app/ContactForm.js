@@ -69,14 +69,14 @@ ContactForm.prototype.add = function(){
 }
 
 ContactForm.prototype.validateEmail = function(){
-    var senderValidator = new SenderValidator();
-    var emailField = $("#email").val();
-
-    if( ! senderValidator.checkEmailFormat(emailField) ){
-        alert( "Invaild Email format !!" );
-    }else{
+//    var senderValidator = new SenderValidator();
+//    var emailField = $("#email").val();
+//
+//    if( ! senderValidator.checkEmailFormat(emailField) ){
+//        alert( "Invaild Email format !!" );
+//    }else{
         ContactForm.prototype.add();
-    }
+//    }
 }
 
 ContactForm.prototype.validateRequired = function(){

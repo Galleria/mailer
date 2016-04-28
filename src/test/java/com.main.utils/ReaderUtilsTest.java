@@ -27,7 +27,7 @@ public class ReaderUtilsTest {
     public void setup() throws IOException {
         bufferedReader = Mockito.mock(BufferedReader.class);
         reader = new ReaderUtils(bufferedReader);
-        expectedContacts = new ArrayList<Contact>();
+        expectedContacts = new ArrayList<>();
 
         contact = new Contact();
         contact.setFirstName("Joey");

@@ -23,6 +23,7 @@ public class ReaderUtils {
             Contact contact = mapper.readValue(line,Contact.class);
             contacts.add(contact);
         }
+        bufferedReader.close();
         return contacts;
     }
 }

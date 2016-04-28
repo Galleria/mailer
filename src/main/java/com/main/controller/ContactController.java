@@ -1,42 +1,35 @@
 package com.main.controller;
 
 import com.main.entities.Contact;
+import com.main.service.ContactService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by cadet on 4/28/2016 AD.
- */
 @Controller
 public class ContactController {
 
+    @Autowired
+    ContactService contactService;
+
     @RequestMapping(value = "/addcontact", method = RequestMethod.POST)
     @ResponseBody
-    Contact addContact(Contact contact){
-        System.out.println( "in addContact" );
-        return contact;
+    void addContact(Contact contact) throws IOException {
+        File file = contactService.initialFile();
+        contactService.write(file,contact);
     }
 
     @RequestMapping(value = "/contacts", method = RequestMethod.GET)
     @ResponseBody
-    List<Contact> getContacts(){
-        System.out.println( "in getContacts" );
-        List<Contact> contacts = stubContacts(5);
-
-        return contacts;
-    }
-
-    private List<Contact> stubContacts(int amount){
-        List<Contact> contacts = new ArrayList<Contact>();
-        for (int i = 0; i < amount; i++) {
-            Contact contact = new Contact("F"+String.valueOf(i), "L"+String.valueOf(i), "e"+String.valueOf(i));
-            contacts.add(contact);
-        }
+    List<Contact> getContacts() throws IOException {
+        File file = contactService.initialFile();
+        List<Contact> contacts = contactService.read(file);
         return contacts;
     }
 }

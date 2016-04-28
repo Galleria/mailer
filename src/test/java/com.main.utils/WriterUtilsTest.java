@@ -17,8 +17,6 @@ public class WriterUtilsTest {
 
     private ArrayList<Contact> contacts;
     private BufferedWriter sbw;
-    private  ReaderUtils readerUtils;
-
     private ObjectMapper mapper;
     private WriterUtils writer;
 
@@ -26,8 +24,7 @@ public class WriterUtilsTest {
     @Before
     public void setup() throws Exception {
         sbw = Mockito.mock(BufferedWriter.class);
-        readerUtils = Mockito.mock(ReaderUtils.class);
-        contacts = new ArrayList<Contact>();
+        contacts = new ArrayList<>();
         mapper = new ObjectMapper();
         writer = new WriterUtils(sbw);
 
@@ -38,34 +35,32 @@ public class WriterUtilsTest {
         contact.setLastName("Boy");
         contact.setEmail("JBoy@mail.com");
         contacts.add(contact);
-
     }
 
     @Test
     public void writeFileWithSingleContact() throws IOException {
-        when(readerUtils.read()).thenReturn(new ArrayList<Contact>());
-        Contact contact = new Contact();
+        writer.setContacts(contacts);
 
-        writer.setReaderUtils(readerUtils);
+        Contact contact = new Contact();
         writer.write(contact);
         verify(sbw, (times(1))).write(mapper.writeValueAsString(contact));
+        verify(sbw, (times(1))).flush();
         verify(sbw, (times(1))).close();
     }
 
     @Test
     public void writeFileWithDuplicateEmail() throws IOException {
-        when(readerUtils.read()).thenReturn(contacts);
-
         Contact contact = new Contact();
         contact.setFirstName("John");
         contact.setLastName("Boy");
         contact.setEmail("JBoy@mail.com");
 
-        writer.setReaderUtils(readerUtils);
+        writer.setContacts(contacts);
         writer.write(contact);
 
         verify(sbw, (times(1))).write(mapper.writeValueAsString(contact));
-        verify(sbw, (times(1))).write(anyString());
+        verify(sbw, (times(2))).write(anyString());
+        verify(sbw, (times(1))).flush();
         verify(sbw, (times(1))).close();
     }
 
