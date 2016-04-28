@@ -7,11 +7,7 @@ ${url}  http://dev.geekybase.local:8000
 ${delay}  0
 
 *** Test Cases ***
-Hello World
-    Log  Hello World!
-
 Open Mailer Page
-#    [Tags]  work_in_progress
     Open Browser  ${url}
     Sleep  ${delay} seconds
 
