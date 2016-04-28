@@ -24,7 +24,7 @@ EmailFormView.prototype = {
     },
 
     onEditorBlurred : function(event) {
-        this._model.body = $(event.editor.document.$).text();
+        this._model.body = this._elements.editor.getData();
         this.setDisabledSendButton();
     },
 
@@ -37,6 +37,9 @@ EmailFormView.prototype = {
         if(!_.isEmpty(errorMessages)) {
             errorAlert.find('.message').html(errorMessages.join('<br/>'));
             errorAlert.slideDown();
+        } else {
+            this._elements.body.val(this._model.body);
+            this._elements.form.submit();
         }
     },
 
