@@ -5,7 +5,6 @@ Resource          resource.robot
 Send button should be disabled when open application
     Open Browser To Main Page
     Element Should Be Disabled    send
-    [Teardown]    Close Browser
 
 Send button should be enabled when enter all required fields
     Open Browser To Main Page
@@ -17,7 +16,6 @@ Send button should be enabled when enter all required fields
     Unselect Frame
     Sleep  1 seconds
     Element Should Be Enabled   send
-    [Teardown]    Close Browser
 
 
 
