@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet"/>
+
+    <script src="js/jquery-2.2.3.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#next').on('click', function() {
+                window.location = '/';
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="well col-xs-8 col-xs-offset-2">
+    <h1>Mass Mailer</h1>
+
+    <h3 th:if="${message}">Cannot send an email because:</h3>
+    <div th:if="${message}">
+        <span th:text="${message}">Message</span>
+    </div>
+
+    <h3 th:if="${to}">Emails were sent to:</h3>
+    <ol th:if="${to}">
+        <li th:each="email : ${to}">
+            <span th:text="${email}">Email</span>
+        </li>
+    </ol>
+
+    <div class="text-right">
+        <button type="button" id="next" name="next" class="btn btn-primary">Next</button>
+    </div>
+</div>
+
+</body>
+</html>
