@@ -13,8 +13,13 @@ import java.util.List;
 @Service
 public class ContactService {
 
+    private File file = new File(Constant.PATH);
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     public File initialFile() throws IOException {
-        File file = new File(Constant.PATH);
         if(!file.exists()){
             file.createNewFile();
         }
@@ -22,9 +27,13 @@ public class ContactService {
     }
 
    public List<Contact> read(File file) throws IOException {
-       BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getAbsoluteFile()));
-       ReaderUtils reader = new ReaderUtils(bufferedReader);
+       ReaderUtils reader = getReaderUtils(file);
        return reader.read();
+    }
+
+    protected ReaderUtils getReaderUtils(File file) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getAbsoluteFile()));
+        return new ReaderUtils(bufferedReader);
     }
 
 

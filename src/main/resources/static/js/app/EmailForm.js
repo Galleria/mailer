@@ -4,6 +4,7 @@ function EmailForm() {
     this.recipients = [];
     this.topic = "";
     this.body = "";
+    this.plainBody = "";
     this.errorMessages = [];
 }
 
@@ -11,7 +12,7 @@ function EmailForm() {
 
 EmailForm.prototype = {
     isEnterAllFields : function() {
-        return Boolean(!_.isEmpty(this.recipients) && this.topic.trim() && this.body.trim());
+        return Boolean(!_.isEmpty(this.recipients) && this.topic.trim() && this.plainBody.trim());
     },
 
     validate : function() {
@@ -48,6 +49,11 @@ EmailForm.prototype = {
         });
 
         this.recipients = _.uniq(recipients);
+    },
+
+    setBody : function(bodyText) {
+        this.body = bodyText;
+        this.plainBody = $(bodyText).text();
     },
 
     isEmailFormatValid : function(email) {

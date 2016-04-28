@@ -1,16 +1,13 @@
 *** Settings ***
 Library		com.mailer.robot.MailerKeyword
+SuiteTeardown  Close Browser
 
 *** Variables ***
-${url}  file:///Users/Cadet/Project/MailerRobotTest/html/Table.html
+${url}  http://dev.geekybase.local:8000
 ${delay}  0
 
 *** Test Cases ***
-Hello World
-    Log  Hello World!
-
 Open Mailer Page
-    [Tags]  work_in_progress
     Open Browser  ${url}
     Sleep  ${delay} seconds
 
@@ -53,10 +50,6 @@ Add Contract Duplicate Email
     Sleep  ${delay} seconds
     Should Be Equal As Integers  2  ${rowCnt}
     Validate Input Fields
-
-Close Mailer Page
-    [Tags]  work_in_progress
-    Close Browser
 
 *** Keywords ***
 Validate Input Fields

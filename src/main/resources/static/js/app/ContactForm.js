@@ -1,95 +1,29 @@
-
-var ContactForm = function(){}
-
-var addContactToTable = function(result){
-    $("#contactList").empty();
-
-    $.each(result, function(index, contact){
-        $tr = $("<tr>");
-        $tdFirstName = $("<td>").text( contact.firstName );
-        $tdLastName = $("<td>").text( contact.lastName );
-        $tdEMail = $("<td>").text( contact.email );
-
-        $tr.append( $tdFirstName )
-            .append($tdLastName)
-            .append($tdEMail);
-
-        $("#contactList").append( $tr );
-    });
-
-    clearContactInputFields();
-    ContactForm.prototype.validateRequired();
-};
-
-var clearContactInputFields = function(){
-    $("#firstName").val("");
-    $("#lastName").val("");
-    $("#email").val("");
-};
-
-ContactForm.prototype.loadContacts = function(){
-    $.ajax({
-      url: "/contacts",
-      type: "GET",
-      async : false,
-      success: addContactToTable,
-      fail: function(error) {
-        response = error;
-      }
-    });
+function ContactForm() {
+    this.firstName = "";
+    this.lastName = "";
+    this.email = "";
 }
 
-ContactForm.prototype.add = function(){
-    var response;
-    var firstNameField = $("#firstName").val();
-    var lastNameField = $("#lastName").val();
-    var emailField = $("#email").val();
+ContactForm.prototype = {
 
-    var contact = {
-      firstName : firstNameField,
-      lastName : lastNameField,
-      email : emailField
-    };
+    validateRequired : function() {
+        return !_.isEmpty(this.firstName) && !_.isEmpty(this.lastName) && !_.isEmpty(this.email) ;
+    },
 
-    $.ajax({
-      url: "/addcontact",
-      type: "POST",
-      async : false,
-      data : contact,
-      success: function(result){
-        response = result;
-        ContactForm.prototype.loadContacts();
-      },
-      fail: function(error) {
-        response = error;
-      }
-    });
+    validateEmail : function() {
+        var emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return emailPattern.test(this.email);
+    },
 
-    return response;
-}
+    setFirstName: function(firstName) {
+        this.firstName = firstName;
+    },
 
-ContactForm.prototype.validateEmail = function(){
-//    var senderValidator = new SenderValidator();
-//    var emailField = $("#email").val();
-//
-//    if( ! senderValidator.checkEmailFormat(emailField) ){
-//        alert( "Invaild Email format !!" );
-//    }else{
-        ContactForm.prototype.add();
-//    }
-}
+    setLastName: function(lastName){
+        this.lastName = lastName;
+    },
 
-ContactForm.prototype.validateRequired = function(){
-    var firstNameField = $("#firstName").val() ? $("#firstName").val().trim() : "";
-    var lastNameField = $("#lastName").val() ? $("#lastName").val().trim() : "";
-    var emailField = $("#email").val() ? $("#email").val().trim() : "";
-    var button = $("#addContactButton");
-
-    if(firstNameField && lastNameField && emailField){
-        button.removeAttr("disabled");
-        button.removeClass("disabled");
-    }else{
-        button.attr("disabled", true);
-        button.addClass("disabled");
+    setEmail: function(email){
+        this.email = email;
     }
-}
+};

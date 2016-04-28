@@ -11,6 +11,8 @@ EmailFormView.prototype = {
 
         this._elements.send.click(_.bind(this.onClickSendButton, this));
         this._elements.errorAlert.find('.close').click(_.bind(this.onClickAlertCloseButton, this));
+
+        this.setDisabledSendButton();
     },
 
     onRecipientsChanged : function(event) {
@@ -24,7 +26,7 @@ EmailFormView.prototype = {
     },
 
     onEditorBlurred : function(event) {
-        this._model.body = $(event.editor.document.$).text();
+        this._model.setBody(this._elements.editor.getData());
         this.setDisabledSendButton();
     },
 
@@ -37,6 +39,9 @@ EmailFormView.prototype = {
         if(!_.isEmpty(errorMessages)) {
             errorAlert.find('.message').html(errorMessages.join('<br/>'));
             errorAlert.slideDown();
+        } else {
+            this._elements.body.val(this._model.body);
+            this._elements.form.submit();
         }
     },
 

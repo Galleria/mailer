@@ -14,12 +14,12 @@ public class MailerKeyword {
     //public static final String ROBOT_LIBRARY_SCOPE = "GLOBAL";
     public static WebDriver driver;
 
-    private static final String tableName = "nameInfo";
+    private static final String tableName = "contactTable";
     private static final String nameID = "firstName";
     private static final String lastNameID = "lastName";
     private static final String emailID = "email";
     private static final String addButton = "addContactButton";
-    private static final String contactButton = "#addContactButton";
+    private static final String contactButton = "openContactList";
 
     public void hello(String name) {
         System.out.println("Hello " + name);
