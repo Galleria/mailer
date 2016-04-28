@@ -1,6 +1,7 @@
-function EmailFormView(model, elements) {
+function EmailFormView(model, elements, subview) {
     this._model = model;
     this._elements = elements;
+    this._subview = subview;
 }
 
 EmailFormView.prototype = {
@@ -11,6 +12,7 @@ EmailFormView.prototype = {
 
         this._elements.send.click(_.bind(this.onClickSendButton, this));
         this._elements.errorAlert.find('.close').click(_.bind(this.onClickAlertCloseButton, this));
+        this._elements.contactButton.click(_.bind(this.onClickContactButton, this));
 
         this.setDisabledSendButton();
     },
@@ -28,6 +30,10 @@ EmailFormView.prototype = {
     onEditorBlurred : function(event) {
         this._model.setBody(this._elements.editor.getData());
         this.setDisabledSendButton();
+    },
+
+    onClickContactButton: function(){
+        this._subview.contactView.initializeContacts();
     },
 
     onClickSendButton : function() {

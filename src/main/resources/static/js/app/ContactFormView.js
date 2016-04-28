@@ -81,6 +81,13 @@ ContactFormView.prototype = {
         });
     },
 
+    initializeContacts: function(){
+        var self = this;
+        this.loadContacts().then(function(contacts){
+            self.reloadContactTable(contacts);
+        });
+    },
+
     onFirstNameChanged: function(event){
         this._model.setFirstName($(event.currentTarget).val());
         this.toggleAddButton();
