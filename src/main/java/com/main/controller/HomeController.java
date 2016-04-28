@@ -1,26 +1,19 @@
 package com.main;
 
-import com.main.entities.Contact;
-import com.main.entities.EmailForm;
+import com.main.entities.Email;
+import com.main.form.EmailForm;
 import com.main.service.MailService;
 import org.robotframework.javalib.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by cadet on 4/26/2016 AD.
- */
 @Controller
 public class HomeController {
 
@@ -41,7 +34,8 @@ public class HomeController {
         modelAndView.setViewName("result");
 
         try {
-            mailService.send(emails, form.getTopic(), form.getBody());
+            Email email = new Email(getEmails(form.getTo()), form.getTopic(), form.getBody());
+            mailService.send(email);
             modelAndView.getModel().put("to", emails);
         } catch (Exception e) {
             modelAndView.getModel().put("message", "Error: " + e.getMessage());

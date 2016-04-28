@@ -1,6 +1,7 @@
 package com.main.controller;
 
 import com.main.HomeController;
+import com.main.entities.Email;
 import com.main.service.MailService;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,24 +22,23 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-/**
- * Created by cadet on 4/27/2016 AD.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class HomeControllerTest {
 
     private HomeController controller;
     private MockMvc mockMvc;
-    private List<String> emails;
+    private List<String> toEmails;
 
     @Mock
     private MailService mailService;
 
     @Captor
-    private ArgumentCaptor<List> emailCaptor;
+    private ArgumentCaptor<Email> emailCaptor;
 
     @Before
     public void setup() throws Exception {
@@ -47,101 +47,127 @@ public class HomeControllerTest {
 
         ReflectionTestUtils.setField(controller, "mailService", mailService);
 
-        emails = Arrays.asList("penny1@hotmail.com", "penny2@hotmail.com", "penny3@hotmail.com");
+        toEmails = Arrays.asList("penny1@hotmail.com", "penny2@hotmail.com", "penny3@hotmail.com");
     }
 
     @Test
-    public void testShowMainPage() throws Exception {
-        mockMvc.perform(get("/")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("main"));
+    public void showMainPage() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("main"));
     }
 
     @Test
-    public void testSendOneEmail() throws Exception {
-        mockMvc.perform(post("/send").param("to", emails.get(0))
+    public void sendOneEmail() throws Exception {
+        mockMvc.perform(post("/send").param("to", toEmails.get(0))
                 .param("topic", "Test Topic")
                 .param("body", "Test Email Body"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("result"))
                 .andExpect(MockMvcResultMatchers.model().attribute("to", is(instanceOf(List.class))))
-                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(emails.get(0)))));
+                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(toEmails.get(0)))));
 
-        verify(mailService).send(emailCaptor.capture(), eq("Test Topic"), eq("Test Email Body"));
-        assertThat(emailCaptor.getValue().toArray(new String[0]), is(arrayContaining((Object) emails.get(0))));
+        verify(mailService).send(emailCaptor.capture());
+
+        Email email = emailCaptor.getValue();
+        assertThat(email.getToEmails(), is(containsInAnyOrder(toEmails.get(0))));
+        assertThat(email.getTopic(), is("Test Topic"));
+        assertThat(email.getBody(), is("Test Email Body"));
     }
 
     @Test
-    public void testSendMoreThanOneEmails() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(",", emails))
+    public void sendMoreThanOneEmails() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(",", toEmails))
                 .param("topic", "Test Topic - Multiple")
                 .param("body", "Test Email Body - Multiple"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("result"))
                 .andExpect(MockMvcResultMatchers.model().attribute("to", is(instanceOf(List.class))))
-                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(emails.get(0), emails.get(1), emails.get(2)))));
+                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(toEmails.get(0), toEmails.get(1), toEmails.get(2)))));
 
-        verify(mailService).send(emailCaptor.capture(), eq("Test Topic - Multiple"), eq("Test Email Body - Multiple"));
-        assertThat(emailCaptor.getValue().toArray(new String[0]), is(arrayContaining((Object) emails.get(0), emails.get(1), emails.get(2))));
+        verify(mailService).send(emailCaptor.capture());
+
+        Email email = emailCaptor.getValue();
+        assertThat(email.getToEmails(), is(containsInAnyOrder(toEmails.get(0), toEmails.get(1), toEmails.get(2))));
+        assertThat(email.getTopic(), is("Test Topic - Multiple"));
+        assertThat(email.getBody(), is("Test Email Body - Multiple"));
     }
 
     @Test
-    public void testSendMoreThanOneEmails_NaturalDelimiter() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(", ", emails))
+    public void sendMoreThanOneEmailsWithNaturalDelimiter() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(", ", toEmails))
                 .param("topic", "Test Topic - Multiple")
                 .param("body", "Test Email Body - Multiple"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("result"))
                 .andExpect(MockMvcResultMatchers.model().attribute("to", is(instanceOf(List.class))))
-                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(emails.get(0), emails.get(1), emails.get(2)))));
+                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(toEmails.get(0), toEmails.get(1), toEmails.get(2)))));
 
-        verify(mailService).send(emailCaptor.capture(), eq("Test Topic - Multiple"), eq("Test Email Body - Multiple"));
-        assertThat(emailCaptor.getValue().toArray(new String[0]), is(arrayContaining((Object) emails.get(0), emails.get(1), emails.get(2))));
+        verify(mailService).send(emailCaptor.capture());
+
+        Email email = emailCaptor.getValue();
+        assertThat(email.getToEmails(), is(containsInAnyOrder(toEmails.get(0), toEmails.get(1), toEmails.get(2))));
+        assertThat(email.getTopic(), is("Test Topic - Multiple"));
+        assertThat(email.getBody(), is("Test Email Body - Multiple"));
     }
 
     @Test
-    public void testSendMoreThanOneEmails_OneEmpty() throws Exception {
-        emails.set(1, " ");
+    public void sendMoreThanOneEmailsAndOneEmailIsEmpty() throws Exception {
+        toEmails.set(1, " ");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(", ", emails))
+        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(", ", toEmails))
                 .param("topic", "Test Topic - Multiple")
                 .param("body", "Test Email Body - Multiple"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("result"))
                 .andExpect(MockMvcResultMatchers.model().attribute("to", is(instanceOf(List.class))))
-                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(emails.get(0), emails.get(2)))));
+                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(toEmails.get(0), toEmails.get(2)))));
 
-        verify(mailService).send(emailCaptor.capture(), eq("Test Topic - Multiple"), eq("Test Email Body - Multiple"));
-        assertThat(emailCaptor.getValue().toArray(new String[0]), is(arrayContaining((Object) emails.get(0), emails.get(2))));
+        verify(mailService).send(emailCaptor.capture());
+
+        Email email = emailCaptor.getValue();
+        assertThat(email.getToEmails(), is(containsInAnyOrder(toEmails.get(0), toEmails.get(2))));
+        assertThat(email.getTopic(), is("Test Topic - Multiple"));
+        assertThat(email.getBody(), is("Test Email Body - Multiple"));
     }
 
     @Test
-    public void testSendMoreThanOneEmails_DuplicateEmails() throws Exception {
-        emails.set(1, emails.get(0));
-        emails.set(2, emails.get(0));
+    public void sendMoreThanOneEmailsAndThereIsDuplicatedEmails() throws Exception {
+        toEmails.set(1, toEmails.get(0));
+        toEmails.set(2, toEmails.get(0));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(",", emails))
+        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", String.join(",", toEmails))
                 .param("topic", "Test Topic - Multiple")
                 .param("body", "Test Email Body - Multiple"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("result"))
                 .andExpect(MockMvcResultMatchers.model().attribute("to", is(instanceOf(List.class))))
-                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(emails.get(0)))));
+                .andExpect(MockMvcResultMatchers.model().attribute("to", is(containsInAnyOrder(toEmails.get(0)))));
 
-        verify(mailService).send(emailCaptor.capture(), eq("Test Topic - Multiple"), eq("Test Email Body - Multiple"));
-        assertThat(emailCaptor.getValue().toArray(new String[0]), is(arrayContaining((Object) emails.get(0))));
+        verify(mailService).send(emailCaptor.capture());
+
+        Email email = emailCaptor.getValue();
+        assertThat(email.getToEmails(), is(containsInAnyOrder(toEmails.get(0))));
+        assertThat(email.getTopic(), is("Test Topic - Multiple"));
+        assertThat(email.getBody(), is("Test Email Body - Multiple"));
     }
 
     @Test
-    public void testSendAndMailServiceThrowsError() throws Exception {
-        doThrow(new MessagingException("Error")).when(mailService).send(anyList(), anyString(), anyString());
+    public void sendEmailButMailServiceThrowsError() throws Exception {
+        doThrow(new MessagingException("Error")).when(mailService).send(any(Email.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", emails.get(0))
+        mockMvc.perform(MockMvcRequestBuilders.post("/send").param("to", toEmails.get(0))
                 .param("topic", "Test Topic")
                 .param("body", "Test Email Body"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("result"))
                 .andExpect(MockMvcResultMatchers.model().attribute("message", is("Error: Error")));
 
-        verify(mailService).send(emailCaptor.capture(), eq("Test Topic"), eq("Test Email Body"));
-        assertThat(emailCaptor.getValue().toArray(new String[0]), is(arrayContaining((Object) emails.get(0))));
+        verify(mailService).send(emailCaptor.capture());
+
+        Email email = emailCaptor.getValue();
+        assertThat(email.getToEmails(), is(containsInAnyOrder(toEmails.get(0))));
+        assertThat(email.getTopic(), is("Test Topic"));
+        assertThat(email.getBody(), is("Test Email Body"));
     }
 }

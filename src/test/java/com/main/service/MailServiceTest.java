@@ -1,8 +1,6 @@
 package com.main.service;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-
+import com.main.entities.Email;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,11 +17,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by cadet on 4/26/2016 AD.
- */
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 public class MailServiceTest {
 
     private static final String HOST = "localhost";
@@ -32,6 +31,7 @@ public class MailServiceTest {
 
     private MailService mailService;
     private Wiser wiser;
+    private Email email;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -46,6 +46,9 @@ public class MailServiceTest {
         ReflectionTestUtils.setField(mailService, "host", HOST);
         ReflectionTestUtils.setField(mailService, "port", PORT);
         ReflectionTestUtils.setField(mailService, "from", FROM);
+
+        List<String> toEmails = Arrays.asList("penny1@hotmail.com", "penny2@hotmail.com", "penny3@hotmail.com");
+        email = new Email(toEmails, "Test", "This is a test email");
     }
 
     @After
@@ -54,88 +57,96 @@ public class MailServiceTest {
     }
 
     @Test
-    public void testSendOneEmail() throws Exception {
-        mailService.send(Arrays.asList("penny@hotmail.com"), "Test", "This is a test email");
+    public void sendOneEmail() throws Exception {
+        email.setToEmails(Arrays.asList("penny@hotmail.com"));
+
+        mailService.send(email);
 
         List<WiserMessage> messages = wiser.getMessages();
 
         assertThat(messages, hasSize(1));
-        assertThatEmailMessageIsCorrect(messages.get(0), "penny@hotmail.com", "Test", "This is a test email");
+        assertThatEmailMessageIsCorrect(messages.get(0), email.getToEmails().get(0), email.getTopic(), email.getBody());
     }
 
     @Test
-    public void testSendMutipleEmails() throws Exception {
-        List<String> emails = Arrays.asList("penny1@hotmail.com", "penny2@hotmail.com", "penny3@hotmail.com");
-
-        mailService.send(emails, "Test Multiple", "This is a test email that send to multiple recipients");
+    public void sendMultipleEmails() throws Exception {
+        mailService.send(email);
 
         assertThat(wiser.getMessages(), hasSize(3));
 
-        for(int i = 0; i < wiser.getMessages().size(); i++) {
+        for (int i = 0; i < wiser.getMessages().size(); i++) {
             WiserMessage message = wiser.getMessages().get(i);
-            assertThatEmailMessageIsCorrect(message, emails.get(i), "Test Multiple", "This is a test email that send to multiple recipients");
+            assertThatEmailMessageIsCorrect(message, email.getToEmails().get(i), email.getTopic(), email.getBody());
         }
     }
 
     @Test
-    public void testSendEmailWithoutTopic_Null() throws Exception {
+    public void sendEmailWithNullTopic() throws Exception {
+        email.setTopic(null);
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(is("Topic is required"));
 
-        mailService.send(Arrays.asList("penny@hotmail.com"), null, "This is a test email");
+        mailService.send(email);
     }
 
     @Test
-    public void testSendEmailWithoutTopic_Blank() throws Exception {
+    public void sendEmailWithBlankTopic() throws Exception {
+        email.setTopic("");
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(is("Topic is required"));
 
-        mailService.send(Arrays.asList("penny@hotmail.com"), "", "This is a test email");
+        mailService.send(email);
     }
 
     @Test
-    public void testSendEmailWithoutBody_Null() throws Exception {
+    public void sendEmailWithNullBody() throws Exception {
+        email.setBody(null);
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(is("Body is required"));
 
-        mailService.send(Arrays.asList("penny@hotmail.com"), "Test", null);
+        mailService.send(email);
     }
 
     @Test
-    public void testSendEmailWithoutBody_Blank() throws Exception {
+    public void sendEmailWithBlankBody() throws Exception {
+        email.setBody("");
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(is("Body is required"));
 
-        mailService.send(Arrays.asList("penny@hotmail.com"), "Test", "");
+        mailService.send(email);
     }
 
     @Test
-    public void testSendEmailWithoutEmails_Null() throws Exception {
+    public void sendEmailWithNullToEmails() throws Exception {
+        email.setToEmails(null);
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(is("Emails are required"));
 
-        mailService.send(null, "Test", "This is a test email");
+        mailService.send(email);
     }
 
     @Test
-    public void testSendEmailWithoutEmails_Empty() throws Exception {
+    public void sendEmailWithEmptyToEmails() throws Exception {
+        email.setToEmails(Collections.emptyList());
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(is("Emails are required"));
 
-        mailService.send(new ArrayList<String>(), "Test", "This is a test email");
+        mailService.send(email);
     }
 
     @Test
-    public void testSendEmailsMoreThanTwenty() throws Exception {
+    public void sendEmailsMoreThanTwentyEmails() throws Exception {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(is("Emails are too much"));
 
-        List<String> emails = new ArrayList<String>(20);
-        for(int i = 0; i < 21; i++) {
-            emails.add("penny" + i + "@hotmail.com");
+        List<String> toEmails = new ArrayList<String>(20);
+        for (int i = 0; i < 21; i++) {
+            toEmails.add("penny" + i + "@hotmail.com");
         }
 
-        mailService.send(emails, "Test", "This is a test email");
+        email.setToEmails(toEmails);
+
+        mailService.send(email);
     }
 
     private String getMessageBody(MimeMessage message) throws IOException, MessagingException {
@@ -146,12 +157,12 @@ public class MailServiceTest {
         return new String(out.toByteArray(), "UTF-8");
     }
 
-    private void assertThatEmailMessageIsCorrect(WiserMessage message, String toEmail, String topic, String body) throws MessagingException, IOException {
-        MimeMessage mimeMessage = message.getMimeMessage();
+    private void assertThatEmailMessageIsCorrect(WiserMessage actualMessage, String expectedToEmail, String expectedTopic, String expectedBody) throws MessagingException, IOException {
+        MimeMessage mimeMessage = actualMessage.getMimeMessage();
 
-        assertThat(message.getEnvelopeSender(), is(FROM));
-        assertThat(message.getEnvelopeReceiver(), is(toEmail));
-        assertThat(mimeMessage.getSubject(), is(topic));
-        assertThat(getMessageBody(mimeMessage), is(containsString(body)));
+        assertThat(actualMessage.getEnvelopeSender(), is(FROM));
+        assertThat(actualMessage.getEnvelopeReceiver(), is(expectedToEmail));
+        assertThat(mimeMessage.getSubject(), is(expectedTopic));
+        assertThat(getMessageBody(mimeMessage), is(containsString(expectedBody)));
     }
 }

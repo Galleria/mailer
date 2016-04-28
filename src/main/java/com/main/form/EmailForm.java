@@ -1,4 +1,4 @@
-package com.main.entities;
+package com.main.form;
 
 /**
  * Created by cadet on 4/27/2016 AD.

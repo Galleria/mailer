@@ -3,8 +3,11 @@ package com.mailer.robot;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class MailerKeyword {
@@ -12,11 +15,11 @@ public class MailerKeyword {
     public static WebDriver driver;
 
     private static final String tableName = "nameInfo";
-    private static final String nameID = "#firstName";
-    private static final String lastNameID = "#lastName";
-    private static final String emailID = "#email";
-    private static final String addButton = "#button";
-    private static final String contactButton = "#contactButton";
+    private static final String nameID = "firstName";
+    private static final String lastNameID = "lastName";
+    private static final String emailID = "email";
+    private static final String addButton = "addContactButton";
+    private static final String contactButton = "#addContactButton";
 
     public void hello(String name) {
         System.out.println("Hello " + name);
@@ -26,9 +29,10 @@ public class MailerKeyword {
         return ("Hello " + name);
     }
 
-    public void openBrowser(String url)
-    {
-        driver = new FirefoxDriver();
+    public void openBrowser(String url) throws MalformedURLException {
+        DesiredCapabilities capability = DesiredCapabilities.chrome();
+        driver = new RemoteWebDriver(new URL("http://192.168.88.10:4444/wd/hub"), capability);
+//        driver = new FirefoxDriver();
         driver.get(url);
     }
 
@@ -53,14 +57,15 @@ public class MailerKeyword {
         driver.findElement(By.id(addButton)).click();
     }
 
-    public boolean isContractExistInTable(String firstName, String lastName, String email) {
+    public boolean isContractExistInTable(String firstName, String lastName, String email)
+    {
         List<WebElement> table = driver.findElements(By.xpath("//table[@id='" + tableName + "']/tbody/tr"));
 
         for (WebElement trElement : table) {
             List<WebElement> tdElements = trElement.findElements(By.xpath("td"));
-            if (tdElements.get(0).getAttribute("value").equalsIgnoreCase(firstName) &&
-                    tdElements.get(1).getAttribute("value").equalsIgnoreCase(lastName) &&
-                    tdElements.get(2).getAttribute("value").equalsIgnoreCase(email)) {
+            if (tdElements.get(0).getText().equalsIgnoreCase(firstName) &&
+                    tdElements.get(1).getText().equalsIgnoreCase(lastName) &&
+                    tdElements.get(2).getText().equalsIgnoreCase(email)) {
                 return true;
             }
         }
