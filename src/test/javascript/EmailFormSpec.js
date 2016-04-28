@@ -11,7 +11,7 @@ describe("EmailForm test", function() {
       it("should return true if all required fields are not empty", function(){
         emailForm.recipients = ['penny@hotmail.com'];
         emailForm.topic = 'Hello penny';
-        emailForm.body = "Penny please check the document";
+        emailForm.plainBody = "Penny please check the document";
 
         expect(emailForm.isEnterAllFields()).toEqual(true);
       });
@@ -19,7 +19,7 @@ describe("EmailForm test", function() {
       it("should return false if recipient is empty", function(){
         emailForm.recipients = [];
         emailForm.topic = 'Hello penny';
-        emailForm.body = "Penny please check the document";
+        emailForm.plainBody = "Penny please check the document";
 
         expect(emailForm.isEnterAllFields()).toEqual(false);
       });
@@ -27,7 +27,7 @@ describe("EmailForm test", function() {
       it("should return false if topic is empty", function(){
         emailForm.recipients = ['penny@hotmail.com'];
         emailForm.topic = '';
-        emailForm.body = "Penny please check the document";
+        emailForm.plainBody = "Penny please check the document";
 
         expect(emailForm.isEnterAllFields()).toEqual(false);
       });
@@ -35,7 +35,7 @@ describe("EmailForm test", function() {
       it("should return false if body is empty", function(){
         emailForm.recipients = ['penny@hotmail.com'];
         emailForm.topic = 'Hello penny';
-        emailForm.body = '';
+        emailForm.plainBody = '';
 
         expect(emailForm.isEnterAllFields()).toEqual(false);
       });

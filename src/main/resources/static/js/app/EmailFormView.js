@@ -11,6 +11,8 @@ EmailFormView.prototype = {
 
         this._elements.send.click(_.bind(this.onClickSendButton, this));
         this._elements.errorAlert.find('.close').click(_.bind(this.onClickAlertCloseButton, this));
+
+        this.setDisabledSendButton();
     },
 
     onRecipientsChanged : function(event) {
@@ -24,7 +26,7 @@ EmailFormView.prototype = {
     },
 
     onEditorBlurred : function(event) {
-        this._model.body = this._elements.editor.getData();
+        this._model.setBody(this._elements.editor.getData());
         this.setDisabledSendButton();
     },
 
