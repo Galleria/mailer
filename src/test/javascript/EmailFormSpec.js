@@ -54,4 +54,21 @@ describe("EmailForm test", function() {
         expect(_.isEmpty(emailForm.validateEmailFormat())).toEqual(false);
     });
   });
+
+  describe("When checking maximum emails", function(){
+    it("should return no error message if emails are less than 20", function(){
+        emailForm.recipients = ['penny@hotmail.com', 'penny1@hotmail.com','penny2@hotmail.com'];
+
+        expect(_.isEmpty(emailForm.validateMaximumEmail())).toEqual(true);
+    });
+
+    it("should return error message if emails are more than 20", function(){
+        for(var i=0; i<30; i++){
+            emailForm.recipients.push('penny'+i+'@hotmail.com');
+        }
+
+        expect(_.isEmpty(emailForm.validateMaximumEmail())).toEqual(false);
+    });
+  });
+
 });

@@ -1,9 +1,13 @@
 function EmailForm() {
+    this.MAXIMUM_EMAILS_NUMBER = 20;
+
     this.recipients = [];
     this.topic = "";
     this.body = "";
     this.errorMessages = [];
 }
+
+
 
 EmailForm.prototype = {
     isEnterAllFields : function() {
@@ -31,7 +35,7 @@ EmailForm.prototype = {
     },
 
     validateMaximumEmail : function() {
-        return "Maximum email is 20.";
+        return this.recipients.length > this.MAXIMUM_EMAILS_NUMBER ? "Maximum email is "+this.MAXIMUM_EMAILS_NUMBER+"." : "";
     },
 
     setRecipients : function(recipientText) {
