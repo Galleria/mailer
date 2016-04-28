@@ -12,16 +12,15 @@
     <script src="js/jquery-2.2.3.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/underscore.js"></script>
-    <script src="js/app/SenderValidator.js"></script>
     <script src="js/ckeditor/ckeditor.js"></script>
     <script src="js/app/initCkPlugin.js"></script>
     <script src="js/app/ContactForm.js"></script>
+    <script src="js/app/ContactFormView.js"></script>
     <script src="js/material.js"></script>
     <script src="js/ripples.js"></script>
     <script src="js/app/EmailForm.js"></script>
     <script src="js/app/EmailFormView.js"></script>
     <script>
-    var contactForm;
         $( document ).ready(function() {
             configCkPluginSize();
             var initCkPlugin = loadCkPlugin();
@@ -37,7 +36,16 @@
             });
             emailFormView.initialize();
 
-            contactForm = new ContactForm();
+            var contactForm = new ContactForm();
+            var contactFormView = new ContactFormView(contactForm, {
+                firstName: $('#firstName'),
+                lastName: $('#lastName'),
+                email: $('#email'),
+                addContactButton: $('#addContactButton'),
+                contactTable: $('#contactList')
+            });
+            contactFormView.initialize();
+
             $.material.init();
         });
     </script>
@@ -54,9 +62,11 @@
             <div class="input-group">
                 <div class="input-group-addon">To</div>
                 <input type="text" class="form-control" id="to" name="to" placeholder="To" />
-                <a class="btn btn-default btn-raised" onclick="contactForm.loadContacts()" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
-                    <span class="glyphicon glyphicon-book"></span>
-                </a>
+                <span class="input-group-btn">
+                    <a class="btn btn-default" id="contactButton" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
+                        <span class="glyphicon glyphicon-book"></span>
+                    </a>
+                </span>
             </div>
         </div>
 
@@ -89,16 +99,16 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-3">
-                        <input type="text" class="form-control" imaxlength="50" id="firstName" placeholder="First Name" onkeyup="contactForm.validateRequired()"/>
+                        <input type="text" class="form-control" imaxlength="50" id="firstName" placeholder="First Name"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" maxlength="50" id="lastName" placeholder="Last Name" onkeyup="contactForm.validateRequired()"/>
+                        <input type="text" class="form-control" maxlength="50" id="lastName" placeholder="Last Name"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="email" class="form-control" id="email" maxlength="100" placeholder="E-mail" onkeyup="contactForm.validateRequired()"/>
+                        <input type="email" class="form-control" id="email" maxlength="100" placeholder="E-mail" />
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-success btn-raised disabled" disabled="disabled" id="addContactButton" onclick="contactForm.validateEmail()">Add Contact</button>
+                        <button type="button" class="btn btn-success btn-raised disabled" disabled="disabled" id="addContactButton">Add Contact</button>
                     </div>
                 </div>
                 <br/>
