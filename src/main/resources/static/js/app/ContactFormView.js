@@ -18,20 +18,25 @@ ContactFormView.prototype = {
         if(!isValidEmail){
             alert("Email format is invalid");
         }else{
-            var contact = {
-              firstName : this._model.firstName,
-              lastName : this._model.lastName,
-              email : this._model.email
-            };
-
-            $.ajax({
-              url: "/addcontact",
-              type: "POST",
-              async : false,
-              data : contact,
-              success: _.bind(self.onAddContactSuccess, self)
-            });
+            self.addContact();
         }
+    },
+
+    addContact: function(){
+        var self = this;
+        var contact = {
+          firstName : this._model.firstName,
+          lastName : this._model.lastName,
+          email : this._model.email
+        };
+
+        $.ajax({
+          url: "/addcontact",
+          type: "POST",
+          async : false,
+          data : contact,
+          success: _.bind(self.onAddContactSuccess, self)
+        });
     },
 
     onAddContactSuccess: function(contact){
