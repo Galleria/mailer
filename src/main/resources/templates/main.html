@@ -65,7 +65,7 @@
                 <div class="input-group-addon">To</div>
                 <input type="text" class="form-control" id="to" name="to" placeholder="To" />
                 <span class="input-group-btn">
-                    <a class="btn btn-default" id="contactButton" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
+                    <a id="openContactList" class="btn btn-default" id="contactButton" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
                         <span class="glyphicon glyphicon-book"></span>
                     </a>
                 </span>
@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <br/>
-                <table class="table table-striped table-bordered">
+                <table id="contactTable" class="table table-striped table-bordered">
                     <thead>
                     <tr>
                         <th>First Name</th>
