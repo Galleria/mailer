@@ -33,7 +33,6 @@ ContactFormView.prototype = {
         $.ajax({
           url: "/addcontact",
           type: "POST",
-          async : false,
           data : contact,
           success: _.bind(self.onAddContactSuccess, self)
         });
