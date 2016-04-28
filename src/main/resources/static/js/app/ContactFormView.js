@@ -33,7 +33,6 @@ ContactFormView.prototype = {
         $.ajax({
           url: "/addcontact",
           type: "POST",
-          async : false,
           data : contact,
           success: _.bind(self.onAddContactSuccess, self)
         });
@@ -43,9 +42,7 @@ ContactFormView.prototype = {
         var self = this;
         this.clearInputFields();
         this.toggleAddButton();
-        this.loadContacts().then(function(contacts){
-            self.reloadContactTable(contacts);
-        });
+        this.initializeContacts();
     },
 
     clearInputFields: function(){
@@ -78,6 +75,13 @@ ContactFormView.prototype = {
         return $.ajax({
           url: "/contacts",
           type: "GET"
+        });
+    },
+
+    initializeContacts: function(){
+        var self = this;
+        this.loadContacts().then(function(contacts){
+            self.reloadContactTable(contacts);
         });
     },
 

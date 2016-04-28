@@ -159,30 +159,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.robotframework</groupId>
-                <artifactId>robotframework-maven-plugin</artifactId>
-                <version>1.4.3</version>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <logLevel>DEBUG</logLevel>
-                    <excludes>
-                        <exclude>work_in_progress</exclude>
-                    </excludes>
-                </configuration>
-
-            </plugin>
         </plugins>
     </build>
-    
+
     <profiles>
         <profile>
             <id>jenkins</id>
@@ -234,6 +213,32 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>robot</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.robotframework</groupId>
+                        <artifactId>robotframework-maven-plugin</artifactId>
+                        <version>1.4.3</version>
+                        <executions>
+                            <execution>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <logLevel>DEBUG</logLevel>
+                            <excludes>
+                                <exclude>work_in_progress</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
-
 </project>
