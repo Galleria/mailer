@@ -42,9 +42,7 @@ ContactFormView.prototype = {
         var self = this;
         this.clearInputFields();
         this.toggleAddButton();
-        this.loadContacts().then(function(contacts){
-            self.reloadContactTable(contacts);
-        });
+        this.initializeContacts();
     },
 
     clearInputFields: function(){
