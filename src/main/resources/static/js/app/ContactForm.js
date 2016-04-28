@@ -31,6 +31,10 @@ var onSuccess = function( result ) {
 
     $("#contactList").empty();
 
+    ContactForm.prototype.loadContacts();
+};
+
+ContactForm.prototype.loadContacts = function(){
     $.ajax({
       url: "/contacts",
       type: "GET",
@@ -40,7 +44,7 @@ var onSuccess = function( result ) {
         response = error;
       }
     });
-};
+}
 
 ContactForm.prototype.add = function(){
     var response;
