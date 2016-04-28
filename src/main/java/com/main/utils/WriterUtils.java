@@ -4,40 +4,38 @@ package com.main.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.main.entities.Contact;
 
-import java.io.File;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WriterUtils {
 
-    private File file = null;
+    private BufferedWriter bw = null;
+    private ReaderUtils readerUtils = null;
 
-    public WriterUtils(String path){
-        this.file = createFile(path);
+    public WriterUtils( BufferedWriter bw ) throws IOException {
+        this.bw = bw;
     }
 
-    protected File createFile(String path) {
-        return new File(path);
+    public void setReaderUtils(ReaderUtils readerUtils) {
+        this.readerUtils = readerUtils;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void write(ArrayList<Contact> contacts) throws IOException {
+    public void write(Contact contact) throws IOException {
+        ArrayList<Contact> contacts = getRead();
+        contacts.add(contact);
         contacts = removeDuplicate(contacts);
         ObjectMapper mapper = new ObjectMapper();
-        List<String> lines = new ArrayList<String>();
-        for( Contact contact : contacts ){
-            String stringContact = mapper.writeValueAsString(contact);
-            lines.add(stringContact);
+
+        for( Contact tempContact : contacts ){
+            bw.write(mapper.writeValueAsString(tempContact));
         }
 
-        Files.write(Paths.get(file.getPath()), lines, Charset.forName("UTF-8"));
+        bw.close();
+    }
+
+    protected ArrayList<Contact> getRead() throws IOException {
+        return this.readerUtils.read();
     }
 
     private ArrayList<Contact> removeDuplicate(ArrayList<Contact> contacts){
@@ -51,5 +49,4 @@ public class WriterUtils {
         }
         return contacts;
     }
-
 }
