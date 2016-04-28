@@ -8,9 +8,9 @@ Library           Selenium2Library
 
 *** Variables ***
 ${SERVER}         localhost:8080
-${BROWSER}        Firefox
+${BROWSER}        Google Chrome
 ${DELAY}          0
-${MAIN URL}      http://${SERVER}/
+${MAIN URL}       http://${SERVER}/
 
 *** Keywords ***
 Open Browser To Main Page
