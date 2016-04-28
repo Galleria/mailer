@@ -7,7 +7,6 @@ ${delay}  0
 
 *** Test Cases ***
 Hello World
-    [Tags]  work_in_progress
     Log  Hello World!
 
 Open Mailer Page
