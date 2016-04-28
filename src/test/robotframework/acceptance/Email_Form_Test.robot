@@ -1,5 +1,6 @@
 *** Settings ***
 Resource          resource.robot
+Test Teardown     Close All Browsers
 
 *** Test Cases ***
 Send button should be disabled when open application
@@ -16,14 +17,3 @@ Send button should be enabled when enter all required fields
     Unselect Frame
     Sleep  1 seconds
     Element Should Be Enabled   send
-
-
-
-
-
-
-
-
-
-
-
