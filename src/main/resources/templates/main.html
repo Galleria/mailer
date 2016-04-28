@@ -5,39 +5,37 @@
     <title>Title</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <link href="css/bootstrap-material-design.css" rel="stylesheet"/>
+    <link href="css/ripples.css" rel="stylesheet"/>
+    <link href="css/main.css" rel="stylesheet"/>
 
     <script src="js/jquery-2.2.3.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/underscore.js"></script>
     <script src="js/app/SenderValidator.js"></script>
     <script src="js/ckeditor/ckeditor.js"></script>
     <script src="js/app/initCkPlugin.js"></script>
     <script src="js/app/ContactForm.js"></script>
-    <script src="js/app/onBlur.js"></script>
-    <script src="js/app/main.js"></script>
+    <script src="js/material.js"></script>
+    <script src="js/ripples.js"></script>
+    <script src="js/app/EmailForm.js"></script>
+    <script src="js/app/EmailFormView.js"></script>
     <script>
     var contactForm;
         $( document ).ready(function() {
             configCkPluginSize();
             var initCkPlugin = loadCkPlugin();
             initCkPlugin();
-            var editor = CKEDITOR.instances.editor;
-            var onBlur = onBlurFactory(editor);
-            editor.on('blur', onBlur);
 
-            $('#send').click(function(event){
-                $('#errorAlert').hide();
-                var to = $('#to').val();
-                var result = senderValidator.checkEmailFormat(to);
-
-                if(!result) {
-                    $('#errorAlert .message').text('Invalid email format.');
-                    $('#errorAlert').slideDown();
-                }
+            var emailForm = new EmailForm();
+            var emailFormView = new EmailFormView(emailForm, {
+                recipients : $('#to'),
+                topic : $('#topic'),
+                editor : CKEDITOR.instances.editor,
+                send : $('#send'),
+                errorAlert : $('#errorAlert')
             });
-
-            $('#errorAlert .close').click(function(){
-                $('#errorAlert').slideUp();
-            });
+            emailFormView.initialize();
 
             contactForm = new ContactForm();
         });
@@ -46,16 +44,16 @@
 <body>
 <div id="errorAlert" class="alert alert-danger collapse">
     <a href="#" class="close" aria-label="close">&times;</a>
-    <span class="message"></span>
+    <div class="message"></div>
 </div>
 <div class="well col-xs-8 col-xs-offset-2">
     <h1>Mass Mailer</h1>
-    <form>
+    <form id="form" action="/send" method="POST">
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-addon">To</div>
                 <input type="text" class="form-control" id="to" name="to" placeholder="To" />
-                <a class="btn btn-default" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
+                <a class="btn btn-default btn-raised" onclick="contacForm.get" href="#" data-toggle="modal" data-backdrop="static" data-target="#contact">
                     <span class="glyphicon glyphicon-book"></span>
                 </a>
             </div>
@@ -70,6 +68,7 @@
 
         <div class="form-group">
             <div id="editor"></div>
+            <input type="hidden" name="body" id="body" />
         </div>
 
         <div class="text-right">
@@ -79,12 +78,12 @@
     </form>
 </div>
 
-<div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Contact</h4>
+                <h4 class="modal-title" id="contactModalLabel">Contact</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -98,7 +97,7 @@
                         <input type="text" class="form-control" maxlength="100" id="email" placeholder="E-mail" onkeyup="contactForm.validate()"/>
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-success disabled" disabled="disabled" id="addContactButton" onclick="contactForm.add()">Add Contact</button>
+                        <button type="button" class="btn btn-success btn-raised disabled" disabled="disabled" id="addContactButton" onclick="contactForm.add()">Add Contact</button>
                     </div>
                 </div>
                 <br/>
