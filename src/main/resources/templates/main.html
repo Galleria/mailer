@@ -26,18 +26,6 @@
             var initCkPlugin = loadCkPlugin();
             initCkPlugin();
 
-            var emailForm = new EmailForm();
-            var emailFormView = new EmailFormView(emailForm, {
-                recipients : $('#to'),
-                topic : $('#topic'),
-                editor : CKEDITOR.instances.editor,
-                send : $('#send'),
-                form : $('#form'),
-                body : $('#body'),
-                errorAlert : $('#errorAlert')
-            });
-            emailFormView.initialize();
-
             var contactForm = new ContactForm();
             var contactFormView = new ContactFormView(contactForm, {
                 firstName: $('#firstName'),
@@ -47,6 +35,21 @@
                 contactTable: $('#contactList')
             });
             contactFormView.initialize();
+
+            var emailForm = new EmailForm();
+            var emailFormView = new EmailFormView(emailForm, {
+                recipients : $('#to'),
+                topic : $('#topic'),
+                editor : CKEDITOR.instances.editor,
+                send : $('#send'),
+                form : $('#form'),
+                body : $('#body'),
+                errorAlert : $('#errorAlert'),
+                contactButton: $('#contactButton')
+            }, {
+                contactView: contactFormView
+            });
+            emailFormView.initialize();
 
             $.material.init();
         });
