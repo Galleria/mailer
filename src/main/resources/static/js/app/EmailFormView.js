@@ -8,7 +8,7 @@ EmailFormView.prototype = {
     initialize : function() {
         this._elements.recipients.change(_.bind(this.onRecipientsChanged, this));
         this._elements.topic.change(_.bind(this.onTopicChanged, this));
-        this._elements.editor.on('blur', _.bind(this.onEditorBlurred, this));
+        this._elements.editor.on('change', _.bind(this.onEditorChanged, this));
 
         this._elements.send.click(_.bind(this.onClickSendButton, this));
         this._elements.errorAlert.find('.close').click(_.bind(this.onClickAlertCloseButton, this));
@@ -27,7 +27,7 @@ EmailFormView.prototype = {
         this.setDisabledSendButton();
     },
 
-    onEditorBlurred : function(event) {
+    onEditorChanged : function(event) {
         this._model.setBody(this._elements.editor.getData());
         this.setDisabledSendButton();
     },

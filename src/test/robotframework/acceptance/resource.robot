@@ -24,6 +24,5 @@ Input Email Form
     Input Text  topic   ${topic}
     Select Frame    xpath=//iframe
     Input Text  xpath=//body    ${bodytext}
-    Press Key   xpath=//body    \\09
     Unselect Frame
     Sleep  1 seconds

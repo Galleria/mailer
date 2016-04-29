@@ -12,6 +12,11 @@ Send button should be enabled when enter all required fields
     Input Email Form    penny@hotmail.com   Test Topic  TEST BODY
     Element Should Be Enabled   send
 
+Send button should be disabled when recipients is empty
+    Open Browser To Main Page
+    Input Email Form    ${EMPTY}   Test Topic  TEST BODY
+    Element Should Be Disabled   send
+
 Send button should send an email
     Open Browser To Main Page
     Input Email Form    penny.inspector.gadget1@gmail.com   Test Topic  TEST BODY
