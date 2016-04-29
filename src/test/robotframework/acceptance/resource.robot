@@ -15,6 +15,7 @@ Open Browser To Main Page
     Maximize Browser Window
     Set Selenium Speed    ${DELAY}
     Main Page Should Be Open
+    Sleep   ${DELAY}
 
 Main Page Should Be Open
     Title Should Be    Title
@@ -22,8 +23,11 @@ Main Page Should Be Open
 Input Email Form
     [Arguments]     ${to}   ${topic}    ${bodytext}
     Input Text  to   ${to}
+    Sleep   ${DELAY}
     Input Text  topic   ${topic}
+    Sleep   ${DELAY}
     Select Frame    xpath=//iframe
     Input Text  xpath=//body    ${bodytext}
+    Sleep   ${DELAY}
     Unselect Frame
     Sleep  1 seconds

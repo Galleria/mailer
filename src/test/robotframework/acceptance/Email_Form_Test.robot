@@ -79,6 +79,7 @@ Topic cannot input more than 500 characters
     ${inputTopic}=     Generate Random String  550
     Sleep  1 seconds
     Input Text  topic   ${inputTopic}
+    Sleep   ${DELAY}
     ${actualTopic}=    Get Value    topic
     ${length}=      Get Length  ${actualTopic}
     Should Be Equal As Integers     ${length}   500
@@ -89,6 +90,7 @@ Body cannot input more than 2000 characters
     Sleep  1 seconds
     Select Frame    xpath=//iframe
     Input Text  xpath=//body    ${inputBody}
+    Sleep   ${DELAY}
     ${actualBody}=    Get Text    xpath=//body
     ${length}=      Get Length  ${actualBody}
     Should Be Equal As Integers     ${length}   2000
