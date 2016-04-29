@@ -4,14 +4,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import javax.script.ScriptException;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+
 
 public class MailerKeyword {
     public static WebDriver driver;
@@ -32,10 +35,10 @@ public class MailerKeyword {
     }
 
     public void openBrowser(String url) throws MalformedURLException {
-//        DesiredCapabilities capability = DesiredCapabilities.chrome();
-//        driver = new RemoteWebDriver(new URL("http://192.168.88.10:4444/wd/hub"), capability);
+        DesiredCapabilities capability = DesiredCapabilities.chrome();
+        driver = new RemoteWebDriver(new URL("http://192.168.88.10:4444/wd/hub"), capability);
 
-        driver = new ChromeDriver();
+//        driver = new ChromeDriver();
         driver.get(url);
     }
 
