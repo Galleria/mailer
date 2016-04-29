@@ -1,57 +1,44 @@
 *** Settings ***
-Library		com.mailer.robot.MailerKeyword
-SuiteTeardown  Close Browser
-
-*** Variables ***
-${url}  http://dev.geekybase.local:8000
-${delay}  0
+RESOURCE            resource_add_contact.robot
+SuiteTeardown       Close Browser
 
 *** Test Cases ***
 Open Mailer Page
+    Open Browser  ${clearContact}
+    Close Browser
     Open Browser  ${url}
     Sleep  ${delay} seconds
 
 Go To Contract Page
-    [Tags]  work_in_progress
     Click Contract Button
     Sleep  ${delay} seconds
 
 Add First Contract
-    [Tags]  work_in_progress
-    Set Name Field  Jack
-    Set Last Name Field  Dawson
-    Set Email Field  JDawson@titanic.com
-    Click Add Button
-    ${rowCnt}=  Count All Contacts
-    Sleep  ${delay} seconds
-#    Should Be Equal As Integers  2  ${rowCnt}
-#    Validate Input Fields
-    Check Contract Exist  Jack  Dawson  JDawson@titanic.com
-
+    Modify Contract  Jack  Dawson  JDawson@titanic.com  1
 
 Add Second Contract
-    [Tags]  work_in_progress
-    Set Name Field  Rose
-    Set Last Name Field  Flower
-    Set Email Field  RFlower@titanic.com
-    Click Add Button
-    ${rowCnt}=  Count All Contacts
-    Sleep  ${delay} seconds
-    Should Be Equal As Integers  2  ${rowCnt}
-    Validate Input Fields
+    Modify Contract  Rose  Flower  RFlower@titanic.com  2
 
 Add Contract Duplicate Email
-    [Tags]  work_in_progress
-    Set Name Field  Jack
-    Set Last Name Field  Kitty
-    Set Email Field  JDawson@titanic.com
-    Click Add Button
-    ${rowCnt}=  Count All Contacts
-    Sleep  ${delay} seconds
-    Should Be Equal As Integers  2  ${rowCnt}
-    Validate Input Fields
+    Modify Contract  Jack  Kitty  JDawson@titanic.com  2
+    Close Browser
+    Open Browser  ${restoreContact}
 
 *** Keywords ***
+Modify Contract
+    [Arguments]  ${firstName}  ${lastName}  ${email}  ${expected_row}
+    Validate Input Fields
+    Set Name Field  ${firstName}
+    Set Last Name Field  ${lastName}
+    Set Email Field  ${email}
+    Sleep  ${delay} seconds
+    Click Add Button
+    Sleep  ${delay} seconds
+    ${rowCnt}=  Count All Contacts
+    Should Be Equal As Integers  ${expected_row}  ${rowCnt}
+    Validate Input Fields
+    Check Contract Exist  ${firstName}  ${lastName}  ${email}
+
 Validate Input Fields
     ${name}=  Get Name Field
     ${lastName}=  Get Last Name Field
@@ -66,4 +53,3 @@ Check Contract Exist
     [Arguments]  ${name}  ${lastName}  ${email}
     ${isExisted}=  Is Contract Exist In Table  ${name}  ${lastName}  ${email}
     Should Be true  ${isExisted}
-
