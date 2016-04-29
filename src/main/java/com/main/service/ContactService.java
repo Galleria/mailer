@@ -48,4 +48,53 @@ public class ContactService {
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         return new WriterUtils(bufferedWriter);
     }
+
+    public void moveContentToTemp() throws IOException{
+        swapContentBetweenTwoFiles("temp" + Constant.PATH, Constant.PATH);
+
+        File file = new File(Constant.PATH);
+        PrintWriter writer = new PrintWriter(file);
+        writer.print("");
+
+        writer.close();
+    }
+
+    private void swapContentBetweenTwoFiles(String destination, String source) throws IOException {
+        File tempFile = new File(destination);
+        if(!tempFile.exists()){
+            tempFile.createNewFile();
+        }
+
+        File sourceFile = new File(source);
+        if(sourceFile.exists()){
+            BufferedWriter bw = getBufferedWriter(tempFile);
+            BufferedReader br = getBufferedReader(source);
+
+            String line;
+            while((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.write(System.lineSeparator());
+            }
+            bw.flush();
+            bw.close();
+        }
+
+    }
+
+    private BufferedWriter getBufferedWriter(File tempFile) throws IOException {
+        FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
+        return new BufferedWriter(fw);
+    }
+
+    private BufferedReader getBufferedReader(String source) throws FileNotFoundException {
+        File file = new File(source);
+        return new BufferedReader(new FileReader(file.getAbsoluteFile()));
+    }
+
+    public void restoreContentFromTemp()throws IOException{
+        swapContentBetweenTwoFiles(Constant.PATH, "temp" + Constant.PATH);
+
+        File tempFile = new File("temp" + Constant.PATH);
+        tempFile.delete();
+    }
 }

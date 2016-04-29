@@ -32,4 +32,16 @@ public class ContactController {
         List<Contact> contacts = contactService.read(file);
         return contacts;
     }
+
+    @RequestMapping(value = "/contacts/clear", method = RequestMethod.GET)
+    @ResponseBody
+    void clearContacts() throws IOException {
+        contactService.moveContentToTemp();
+    }
+
+    @RequestMapping(value = "/contacts/restore", method = RequestMethod.GET)
+    @ResponseBody
+    void restoreContacts() throws IOException {
+        contactService.restoreContentFromTemp();
+    }
 }
