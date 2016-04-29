@@ -50,6 +50,18 @@ Send button should send an email if there is a duplicated
     Wait Until Page Contains Element  send
     Element Should Be Visible  send
 
+Send button should send an email if there is a duplicated even it is exceed the maximum limit
+    ${TO_EMAILS}=  Generate To Email Address  22  ,
+    ${TO_EMAILS}=  Replace String Using Regexp  ${TO_EMAILS}  \\d+  1
+    Open Browser To Main Page
+    Input Email Form    ${TO_EMAILS}   Test Topic  TEST BODY
+    Click Button  send
+    Wait Until Page Contains Element  next
+    Xpath Should Match X Times  //li/span  1
+    Click Button  next
+    Wait Until Page Contains Element  send
+    Element Should Be Visible  send
+
 Send button should send multiple emails
     ${TO_EMAILS}=  Generate To Email Address  2  , \
     Open Browser To Main Page
