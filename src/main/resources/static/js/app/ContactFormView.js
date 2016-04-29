@@ -49,6 +49,9 @@ ContactFormView.prototype = {
         this._elements.firstName.val("");
         this._elements.lastName.val("");
         this._elements.email.val("");
+        this._model.setFirstName("");
+        this._model.setLastName("");
+        this._model.setEmail("");
     },
 
     reloadContactTable: function(contacts){
@@ -82,6 +85,8 @@ ContactFormView.prototype = {
         var self = this;
         this.loadContacts().then(function(contacts){
             self.reloadContactTable(contacts);
+            self.clearInputFields();
+            self.toggleAddButton();
         });
     },
 
