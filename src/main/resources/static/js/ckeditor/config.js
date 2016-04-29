@@ -30,4 +30,5 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 */
 	config.removeButtons = 'About,Maximize,ShowBlocks,Smiley,SpecialChar,Flash,PageBreak,Iframe,BidiLtr,BidiRtl,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField';
+	config.extraPlugins = 'maxlength';
 };
