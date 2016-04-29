@@ -17,6 +17,16 @@ Send button should be disabled when recipients is empty
     Input Email Form    ${EMPTY}   Test Topic  TEST BODY
     Element Should Be Disabled   send
 
+Send button should be disabled when topic is empty
+    Open Browser To Main Page
+    Input Email Form    penny@hotmail.com   ${EMPTY}    TEST BODY
+    Element Should Be Disabled   send
+
+Send button should be disabled when body is empty
+    Open Browser To Main Page
+    Input Email Form    penny@hotmail.com   Test Topic  ${EMPTY}
+    Element Should Be Disabled   send
+
 Send button should send an email
     Open Browser To Main Page
     Input Email Form    penny.inspector.gadget1@gmail.com   Test Topic  TEST BODY
@@ -47,3 +57,20 @@ Send button should send multiple emails
     Click Button  next
     Wait Until Page Contains Element  send
     Element Should Be Visible  send
+
+Topic cannot input more than 500 characters
+    Open Browser To Main Page
+    ${inputTopic}=     Generate Random String  550
+    Input Text  topic   ${inputTopic}
+    ${actualTopic}=    Get Value    topic
+    ${length}=      Get Length  ${actualTopic}
+    Should Be Equal As Integers     ${length}   500
+
+Body cannot input more than 2000 characters
+    Open Browser To Main Page
+    ${inputBody}=     Generate Random String  2500
+    Select Frame    xpath=//iframe
+    Input Text  xpath=//body    ${inputBody}
+    ${actualBody}=    Get Text    xpath=//body
+    ${length}=      Get Length  ${actualBody}
+    Should Be Equal As Integers     ${length}   2000

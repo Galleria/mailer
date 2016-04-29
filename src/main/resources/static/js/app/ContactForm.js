@@ -7,6 +7,7 @@ function ContactForm() {
 ContactForm.prototype = {
 
     validateRequired : function() {
+        console.log(this.firstName +"    "+ this.lastName +"     "+ this.email);
         return !_.isEmpty(this.firstName) && !_.isEmpty(this.lastName) && !_.isEmpty(this.email) ;
     },
 

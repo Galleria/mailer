@@ -1,5 +1,6 @@
 *** Settings ***
 Library           Selenium2Library
+Library           String
 
 *** Variables ***
 ${SERVER}         dev.geekybase.local:8000
