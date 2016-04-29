@@ -20,15 +20,22 @@ public class ContactService {
     }
 
     public File initialFile() throws IOException {
-        if(!file.exists()){
-            file.createNewFile();
+        if(!this.file.exists()){
+            this.file.createNewFile();
         }
-        return file;
+        return this.file;
     }
 
-   public List<Contact> read(File file) throws IOException {
+    public List<Contact> read(File file) throws IOException {
        ReaderUtils reader = getReaderUtils(file);
        return reader.read();
+    }
+
+    public void write(File file,Contact contact) throws IOException {
+        ArrayList<Contact> contacts = (ArrayList<Contact>) this.read(file);
+        WriterUtils writer = getWriterUtils(file);
+        writer.setContacts(contacts);
+        writer.write(contact);
     }
 
     protected ReaderUtils getReaderUtils(File file) throws IOException {
@@ -36,15 +43,9 @@ public class ContactService {
         return new ReaderUtils(bufferedReader);
     }
 
-
-    public void write(File file,Contact contact) throws IOException {
-        ArrayList<Contact> contacts = (ArrayList<Contact>) this.read(file);
-
+    protected WriterUtils getWriterUtils(File file) throws IOException {
         FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        WriterUtils writer = new WriterUtils(bufferedWriter);
-
-        writer.setContacts(contacts);
-        writer.write(contact);
+        return new WriterUtils(bufferedWriter);
     }
 }
