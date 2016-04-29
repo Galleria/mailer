@@ -65,6 +65,7 @@ Send button should send multiple emails
 Topic cannot input more than 500 characters
     Open Browser To Main Page
     ${inputTopic}=     Generate Random String  550
+    Sleep  1 seconds
     Input Text  topic   ${inputTopic}
     ${actualTopic}=    Get Value    topic
     ${length}=      Get Length  ${actualTopic}
@@ -73,6 +74,7 @@ Topic cannot input more than 500 characters
 Body cannot input more than 2000 characters
     Open Browser To Main Page
     ${inputBody}=     Generate Random String  2500
+    Sleep  1 seconds
     Select Frame    xpath=//iframe
     Input Text  xpath=//body    ${inputBody}
     ${actualBody}=    Get Text    xpath=//body
