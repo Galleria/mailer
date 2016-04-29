@@ -20,15 +20,22 @@ public class ContactService {
     }
 
     public File initialFile() throws IOException {
-        if(!file.exists()){
-            file.createNewFile();
+        if(!this.file.exists()){
+            this.file.createNewFile();
         }
-        return file;
+        return this.file;
     }
 
-   public List<Contact> read(File file) throws IOException {
+    public List<Contact> read(File file) throws IOException {
        ReaderUtils reader = getReaderUtils(file);
        return reader.read();
+    }
+
+    public void write(File file,Contact contact) throws IOException {
+        ArrayList<Contact> contacts = (ArrayList<Contact>) this.read(file);
+        WriterUtils writer = getWriterUtils(file);
+        writer.setContacts(contacts);
+        writer.write(contact);
     }
 
     protected ReaderUtils getReaderUtils(File file) throws IOException {
@@ -36,15 +43,58 @@ public class ContactService {
         return new ReaderUtils(bufferedReader);
     }
 
-
-    public void write(File file,Contact contact) throws IOException {
-        ArrayList<Contact> contacts = (ArrayList<Contact>) this.read(file);
-
+    protected WriterUtils getWriterUtils(File file) throws IOException {
         FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        WriterUtils writer = new WriterUtils(bufferedWriter);
+        return new WriterUtils(bufferedWriter);
+    }
 
-        writer.setContacts(contacts);
-        writer.write(contact);
+    public void moveContentToTemp() throws IOException{
+        swapContentBetweenTwoFiles("temp" + Constant.PATH, Constant.PATH);
+
+        File file = new File(Constant.PATH);
+        PrintWriter writer = new PrintWriter(file);
+        writer.print("");
+
+        writer.close();
+    }
+
+    private void swapContentBetweenTwoFiles(String destination, String source) throws IOException {
+        File tempFile = new File(destination);
+        if(!tempFile.exists()){
+            tempFile.createNewFile();
+        }
+
+        File sourceFile = new File(source);
+        if(sourceFile.exists()){
+            BufferedWriter bw = getBufferedWriter(tempFile);
+            BufferedReader br = getBufferedReader(source);
+
+            String line;
+            while((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.write(System.lineSeparator());
+            }
+            bw.flush();
+            bw.close();
+        }
+
+    }
+
+    private BufferedWriter getBufferedWriter(File tempFile) throws IOException {
+        FileWriter fw = new FileWriter(tempFile.getAbsoluteFile());
+        return new BufferedWriter(fw);
+    }
+
+    private BufferedReader getBufferedReader(String source) throws FileNotFoundException {
+        File file = new File(source);
+        return new BufferedReader(new FileReader(file.getAbsoluteFile()));
+    }
+
+    public void restoreContentFromTemp()throws IOException{
+        swapContentBetweenTwoFiles(Constant.PATH, "temp" + Constant.PATH);
+
+        File tempFile = new File("temp" + Constant.PATH);
+        tempFile.delete();
     }
 }
