@@ -6,9 +6,9 @@ function ContactFormView(model, elements) {
 ContactFormView.prototype = {
 
     initialize : function() {
-        this._elements.firstName.keyup(_.bind(this.onFirstNameChanged, this));
-        this._elements.lastName.keyup(_.bind(this.onLastNameChanged, this));
-        this._elements.email.keyup(_.bind(this.onEmailChanged, this));
+        this._elements.firstName.on("keyup keydown", _.bind(this.onFirstNameChanged, this));
+        this._elements.lastName.on("keyup keydown", _.bind(this.onLastNameChanged, this));
+        this._elements.email.on("keyup keydown", _.bind(this.onEmailChanged, this));
         this._elements.addContactButton.click(_.bind(this.onAddContactButtonClicked, this));
     },
 
